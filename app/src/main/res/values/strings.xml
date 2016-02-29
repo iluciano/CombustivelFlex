@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Combustivel Flex</string>
+    <string name="banner_ad_unit_id">ca-app-pub-1199102836233471/9556263749</string>
+    <string name="hint_gasolina">Digite o valor da gasolina</string>
+    <string name="hint_etanol">Digite o valor do etanol</string>
+    <string name="btn_calcular">Calcular</string>
+    <string name="btn_limpar">Limpar</string>
+    <string name="btn_reset">Limpar</string>
+    <string name="err_msg_gasolina">Campo não pode ficar vazio.</string>
+    <string name="err_msg_etanol">Campo não pode ficar vazio.</string>
+</resources>
