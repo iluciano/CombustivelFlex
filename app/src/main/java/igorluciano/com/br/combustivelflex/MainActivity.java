@@ -1,46 +1,77 @@
 package igorluciano.com.br.combustivelflex;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
-    EditText txtValGas,txtValEta;
-    Button btnLimpar;
+public class MainActivity extends Activity {
+    private EditText gasolineInput;
+    private EditText ethanolInput;
+    private AdView bottomButtonsAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtValGas = (EditText)findViewById(R.id.gasolina_edit_text);
-        txtValEta = (EditText)findViewById(R.id.etanol_edit_text);
-        txtValGas.addTextChangedListener(Mask.insert(Mask.DOUBLE_MASK, txtValGas));
-        txtValEta.addTextChangedListener(Mask.insert(Mask.DOUBLE_MASK, txtValEta));
+        gasolineInput = findViewById(R.id.gasoline_input);
+        ethanolInput = findViewById(R.id.ethanol_input);
 
-        btnLimpar = (Button) findViewById(R.id.button_limpar);
-        btnLimpar.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                txtValGas.setText(String.valueOf(""));
-                txtValEta.setText(String.valueOf(""));
-            }
+        findViewById(R.id.clear_button).setOnClickListener(view -> {
+            gasolineInput.setText("");
+            ethanolInput.setText("");
+            gasolineInput.requestFocus();
         });
+
+        new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
+        FrameLayout adContainer = findViewById(R.id.bottom_buttons_ad_container);
+        bottomButtonsAd = AdMobBanner.loadMainBanner(this, adContainer);
     }
 
-    public void onClickResult(View v){
-        if(TextUtils.isEmpty(txtValGas.getText().toString()) || TextUtils.isEmpty(txtValEta.getText().toString())) {
-            Toast.makeText(getApplicationContext(), "Digite os valores.", Toast.LENGTH_SHORT).show();
-        }else{
-            Intent it = new Intent(this, ResultActivity.class);
-            it.putExtra("valGas", Double.parseDouble(txtValGas.getText().toString()));
-            it.putExtra("valEta", Double.parseDouble(txtValEta.getText().toString()));
-            startActivity(it);
+    public void onClickResult(View view) {
+        String gasolineText = gasolineInput.getText().toString();
+        String ethanolText = ethanolInput.getText().toString();
+
+        if (TextUtils.isEmpty(gasolineText) || TextUtils.isEmpty(ethanolText)) {
+            Toast.makeText(this, R.string.enter_values, Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Double gasoline = parsePrice(gasolineText);
+        Double ethanol = parsePrice(ethanolText);
+
+        if (gasoline == null || ethanol == null || gasoline <= 0 || ethanol <= 0) {
+            Toast.makeText(this, R.string.enter_valid_values, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra(ResultActivity.EXTRA_GASOLINE, gasoline);
+        intent.putExtra(ResultActivity.EXTRA_ETHANOL, ethanol);
+        startActivity(intent);
+    }
+
+    private Double parsePrice(String value) {
+        try {
+            return Double.parseDouble(value.trim().replace(',', '.'));
+        } catch (NumberFormatException exception) {
+            return null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (bottomButtonsAd != null) {
+            bottomButtonsAd.destroy();
+        }
+        super.onDestroy();
     }
 }

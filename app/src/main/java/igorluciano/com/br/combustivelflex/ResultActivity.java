@@ -1,43 +1,46 @@
 package igorluciano.com.br.combustivelflex;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.ads.AdSize;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-/**
- * Created by igorl on 22/02/2016.
- */
-public class ResultActivity extends MainActivity {
-    private TextView txtV;
+public class ResultActivity extends Activity {
+    public static final String EXTRA_GASOLINE = "valGas";
+    public static final String EXTRA_ETHANOL = "valEta";
+
+    private AdView bottomCarAd;
 
     @Override
-    public void onCreate(Bundle icicle){
-        super.onCreate(icicle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.result_activity);
 
-        txtV = (TextView)findViewById(R.id.txtResultado_text_view);
-        Bundle bundle = getIntent().getExtras();
+        TextView resultText = findViewById(R.id.result_text);
+        double gasoline = getIntent().getDoubleExtra(EXTRA_GASOLINE, 0);
+        double ethanol = getIntent().getDoubleExtra(EXTRA_ETHANOL, 0);
 
-        if (bundle.containsKey("valGas") && bundle.containsKey("valEta")){
-            double val1 = bundle.getDouble("valEta");
-            double val2 = bundle.getDouble("valGas");
-            double res = val1/val2;
-
-            if (res < 0.70){
-                txtV.setText("ETANOL");
-            }else{
-                txtV.setText("GASOLINA");
-            }
-        }else{
-            txtV.setText("Volte e digite valores válidos.");
+        if (gasoline <= 0 || ethanol <= 0) {
+            resultText.setText(R.string.invalid_result);
+            return;
         }
 
-        AdView ads = (AdView) findViewById(R.id.adView);
-        AdRequest request = new AdRequest.Builder().build();
-        ads.loadAd(request);
+        int result = ethanol / gasoline < 0.7
+                ? R.string.result_ethanol
+                : R.string.result_gasoline;
+        resultText.setText(result);
+
+        FrameLayout adContainer = findViewById(R.id.bottom_car_ad_container);
+        bottomCarAd = AdMobBanner.loadResultBanner(this, adContainer);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (bottomCarAd != null) {
+            bottomCarAd.destroy();
+        }
+        super.onDestroy();
     }
 }

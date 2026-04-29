@@ -1,11 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Combustivel Flex</string>
-    <string name="banner_ad_unit_id">ca-app-pub-1199102836233471/9556263749</string>
-    <string name="hint_gasolina">Digite o valor da gasolina</string>
-    <string name="hint_etanol">Digite o valor do etanol</string>
-    <string name="btn_calcular">Calcular</string>
-    <string name="btn_limpar">Limpar</string>
-    <string name="btn_reset">Limpar</string>
-    <string name="err_msg_gasolina">Campo não pode ficar vazio.</string>
-    <string name="err_msg_etanol">Campo não pode ficar vazio.</string>
+    <string name="hint_gasoline">Digite o valor da gasolina</string>
+    <string name="hint_ethanol">Digite o valor do etanol</string>
+    <string name="btn_calculate">Calcular</string>
+    <string name="btn_clear">Limpar</string>
+    <string name="enter_values">Digite os valores.</string>
+    <string name="enter_valid_values">Digite valores válidos.</string>
+    <string name="result_title">O melhor combústivel para o seu carro é:</string>
+    <string name="result_ethanol">ETANOL</string>
+    <string name="result_gasoline">GASOLINA</string>
+    <string name="invalid_result">Volte e digite valores válidos.</string>
+    <string name="result_car_description">Carro</string>
+    <string name="road_description">Estrada</string>
+    <string name="gas_station_description">Posto de combustivel</string>
+    <string name="admob_app_id">ca-app-pub-1199102836233471~9279220680</string>
 </resources>
