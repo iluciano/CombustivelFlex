@@ -29,6 +29,37 @@
             android:importantForAutofill="no"
             android:inputType="numberDecimal" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/consumption_prefix" />
+
+            <EditText
+                android:id="@+id/gasoline_consumption_input"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gasoline_consumption_suffix" />
+        </LinearLayout>
+
         <EditText
             android:id="@+id/ethanol_input"
             android:layout_width="match_parent"
@@ -39,6 +70,37 @@
             android:hint="@string/hint_ethanol"
             android:importantForAutofill="no"
             android:inputType="numberDecimal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/consumption_prefix" />
+
+            <EditText
+                android:id="@+id/ethanol_consumption_input"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:gravity="end"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ethanol_consumption_suffix" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

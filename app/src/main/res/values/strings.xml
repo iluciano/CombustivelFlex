@@ -7,6 +7,10 @@
     <string name="btn_clear">Limpar</string>
     <string name="enter_values">Digite os valores.</string>
     <string name="enter_valid_values">Digite valores válidos.</string>
+    <string name="enter_both_consumptions">Digite o consumo na gasolina e no etanol, ou deixe os dois vazios.</string>
+    <string name="consumption_prefix">Meu carro faz</string>
+    <string name="gasoline_consumption_suffix">km/L na gasolina.</string>
+    <string name="ethanol_consumption_suffix">km/L no etanol.</string>
     <string name="result_title">O melhor combústivel para o seu carro é:</string>
     <string name="result_ethanol">ETANOL</string>
     <string name="result_gasoline">GASOLINA</string>
