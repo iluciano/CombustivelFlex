@@ -3,6 +3,11 @@
 .tools
 /local.properties
 /keystore.properties
+*.jks
+*.keystore
+*.pepk
+/pepk.jar
+/encryption_public_key.pem
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
