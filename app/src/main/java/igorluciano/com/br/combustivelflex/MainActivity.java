@@ -3,7 +3,9 @@ package igorluciano.com.br.combustivelflex;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -24,6 +26,8 @@ public class MainActivity extends Activity {
 
         gasolineInput = findViewById(R.id.gasoline_input);
         ethanolInput = findViewById(R.id.ethanol_input);
+        setupPriceInput(gasolineInput);
+        setupPriceInput(ethanolInput);
 
         findViewById(R.id.clear_button).setOnClickListener(view -> {
             gasolineInput.setText("");
@@ -67,11 +71,87 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void setupPriceInput(EditText input) {
+        input.addTextChangedListener(new PriceInputTextWatcher(input));
+    }
+
     @Override
     protected void onDestroy() {
         if (bottomButtonsAd != null) {
             bottomButtonsAd.destroy();
         }
         super.onDestroy();
+    }
+
+    private static final class PriceInputTextWatcher implements TextWatcher {
+        private static final int MAX_INTEGER_DIGITS = 2;
+        private static final int MAX_DECIMAL_DIGITS = 3;
+
+        private final EditText input;
+        private boolean updating;
+
+        private PriceInputTextWatcher(EditText input) {
+            this.input = input;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence text, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence text, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (updating) {
+                return;
+            }
+
+            String original = editable.toString();
+            String formatted = formatPriceInput(original);
+            if (original.equals(formatted)) {
+                return;
+            }
+
+            updating = true;
+            input.setText(formatted);
+            input.setSelection(formatted.length());
+            updating = false;
+        }
+
+        private String formatPriceInput(String value) {
+            StringBuilder integerPart = new StringBuilder();
+            StringBuilder decimalPart = new StringBuilder();
+            boolean hasDecimalSeparator = false;
+
+            for (int index = 0; index < value.length(); index++) {
+                char character = value.charAt(index);
+                if (character == '.' || character == ',') {
+                    if (!hasDecimalSeparator && integerPart.length() > 0) {
+                        hasDecimalSeparator = true;
+                    }
+                    continue;
+                }
+
+                if (!Character.isDigit(character)) {
+                    continue;
+                }
+
+                if (hasDecimalSeparator) {
+                    if (decimalPart.length() < MAX_DECIMAL_DIGITS) {
+                        decimalPart.append(character);
+                    }
+                } else if (integerPart.length() < MAX_INTEGER_DIGITS) {
+                    integerPart.append(character);
+                }
+            }
+
+            if (!hasDecimalSeparator) {
+                return integerPart.toString();
+            }
+
+            return integerPart + "." + decimalPart;
+        }
     }
 }
