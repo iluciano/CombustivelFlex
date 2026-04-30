@@ -14,6 +14,8 @@
     <string name="result_title">O melhor combústivel para o seu carro é:</string>
     <string name="result_ethanol">ETANOL</string>
     <string name="result_gasoline">GASOLINA</string>
+    <string name="savings_title">Economia estimada:</string>
+    <string name="btn_recalculate">RECALCULAR</string>
     <string name="invalid_result">Volte e digite valores válidos.</string>
     <string name="result_car_description">Carro</string>
     <string name="road_description">Estrada</string>

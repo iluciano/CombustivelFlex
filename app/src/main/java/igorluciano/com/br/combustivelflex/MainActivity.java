@@ -3,6 +3,8 @@ package igorluciano.com.br.combustivelflex;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,11 +17,18 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends Activity {
+    private static final long AUTO_CALCULATION_DELAY_MS = 900;
+    public static final String EXTRA_CLEAR_INPUTS = "clearInputs";
+
     private EditText gasolineInput;
     private EditText ethanolInput;
     private EditText gasolineConsumptionInput;
     private EditText ethanolConsumptionInput;
     private AdView bottomButtonsAd;
+    private final Handler autoCalculationHandler = new Handler(Looper.getMainLooper());
+    private final Runnable autoCalculationRunnable = () -> startResultIfReady(false);
+    private boolean clearingInputs;
+    private boolean resultStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +41,11 @@ public class MainActivity extends Activity {
         ethanolConsumptionInput = findViewById(R.id.ethanol_consumption_input);
         setupPriceInput(gasolineInput);
         setupPriceInput(ethanolInput);
+        setupAutoCalculation();
 
         findViewById(R.id.clear_button).setOnClickListener(view -> {
+            autoCalculationHandler.removeCallbacks(autoCalculationRunnable);
+            resultStarted = false;
             gasolineInput.setText("");
             ethanolInput.setText("");
             gasolineConsumptionInput.setText("");
@@ -46,23 +58,48 @@ public class MainActivity extends Activity {
         bottomButtonsAd = AdMobBanner.loadMainBanner(this, adContainer);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        clearInputsIfRequested(intent);
+    }
+
     public void onClickResult(View view) {
+        startResultIfReady(true);
+    }
+
+    private void startResultIfReady(boolean showErrors) {
+        Intent intent = buildResultIntent(showErrors);
+        if (intent == null || resultStarted) {
+            return;
+        }
+
+        resultStarted = true;
+        startActivity(intent);
+    }
+
+    private Intent buildResultIntent(boolean showErrors) {
         String gasolineText = gasolineInput.getText().toString();
         String ethanolText = ethanolInput.getText().toString();
         String gasolineConsumptionText = gasolineConsumptionInput.getText().toString();
         String ethanolConsumptionText = ethanolConsumptionInput.getText().toString();
 
         if (TextUtils.isEmpty(gasolineText) || TextUtils.isEmpty(ethanolText)) {
-            Toast.makeText(this, R.string.enter_values, Toast.LENGTH_SHORT).show();
-            return;
+            if (showErrors) {
+                Toast.makeText(this, R.string.enter_values, Toast.LENGTH_SHORT).show();
+            }
+            return null;
         }
 
         Double gasoline = parsePrice(gasolineText);
         Double ethanol = parsePrice(ethanolText);
 
         if (gasoline == null || ethanol == null || gasoline <= 0 || ethanol <= 0) {
-            Toast.makeText(this, R.string.enter_valid_values, Toast.LENGTH_SHORT).show();
-            return;
+            if (showErrors) {
+                Toast.makeText(this, R.string.enter_valid_values, Toast.LENGTH_SHORT).show();
+            }
+            return null;
         }
 
         Integer gasolineConsumption = parseConsumption(gasolineConsumptionText);
@@ -73,8 +110,10 @@ public class MainActivity extends Activity {
         if (hasGasolineConsumption != hasEthanolConsumption
                 || gasolineConsumption == null
                 || ethanolConsumption == null) {
-            Toast.makeText(this, R.string.enter_both_consumptions, Toast.LENGTH_SHORT).show();
-            return;
+            if (showErrors) {
+                Toast.makeText(this, R.string.enter_both_consumptions, Toast.LENGTH_SHORT).show();
+            }
+            return null;
         }
 
         Intent intent = new Intent(this, ResultActivity.class);
@@ -82,7 +121,7 @@ public class MainActivity extends Activity {
         intent.putExtra(ResultActivity.EXTRA_ETHANOL, ethanol);
         intent.putExtra(ResultActivity.EXTRA_GASOLINE_CONSUMPTION, gasolineConsumption);
         intent.putExtra(ResultActivity.EXTRA_ETHANOL_CONSUMPTION, ethanolConsumption);
-        startActivity(intent);
+        return intent;
     }
 
     private Double parsePrice(String value) {
@@ -110,12 +149,71 @@ public class MainActivity extends Activity {
         input.addTextChangedListener(new PriceInputTextWatcher(input));
     }
 
+    private void setupAutoCalculation() {
+        TextWatcher watcher = new AutoCalculationTextWatcher();
+        gasolineInput.addTextChangedListener(watcher);
+        ethanolInput.addTextChangedListener(watcher);
+        gasolineConsumptionInput.addTextChangedListener(watcher);
+        ethanolConsumptionInput.addTextChangedListener(watcher);
+    }
+
+    private void scheduleAutoCalculation() {
+        if (clearingInputs) {
+            return;
+        }
+
+        resultStarted = false;
+        autoCalculationHandler.removeCallbacks(autoCalculationRunnable);
+        if (buildResultIntent(false) != null) {
+            autoCalculationHandler.postDelayed(autoCalculationRunnable, AUTO_CALCULATION_DELAY_MS);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resultStarted = false;
+        clearInputsIfRequested(getIntent());
+    }
+
     @Override
     protected void onDestroy() {
+        autoCalculationHandler.removeCallbacks(autoCalculationRunnable);
         if (bottomButtonsAd != null) {
             bottomButtonsAd.destroy();
         }
         super.onDestroy();
+    }
+
+    private void clearInputsIfRequested(Intent intent) {
+        if (intent == null || !intent.getBooleanExtra(EXTRA_CLEAR_INPUTS, false)) {
+            return;
+        }
+
+        autoCalculationHandler.removeCallbacks(autoCalculationRunnable);
+        clearingInputs = true;
+        gasolineInput.setText("");
+        ethanolInput.setText("");
+        gasolineConsumptionInput.setText("");
+        ethanolConsumptionInput.setText("");
+        clearingInputs = false;
+        gasolineInput.requestFocus();
+        intent.removeExtra(EXTRA_CLEAR_INPUTS);
+    }
+
+    private final class AutoCalculationTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence text, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence text, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            scheduleAutoCalculation();
+        }
     }
 
     private static final class PriceInputTextWatcher implements TextWatcher {

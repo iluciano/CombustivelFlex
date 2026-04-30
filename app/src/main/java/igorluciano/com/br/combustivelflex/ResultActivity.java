@@ -1,11 +1,15 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class ResultActivity extends Activity {
     public static final String EXTRA_GASOLINE = "valGas";
@@ -21,6 +25,7 @@ public class ResultActivity extends Activity {
         setContentView(R.layout.result_activity);
 
         TextView resultText = findViewById(R.id.result_text);
+        TextView savingsValueText = findViewById(R.id.savings_value_text);
         double gasoline = getIntent().getDoubleExtra(EXTRA_GASOLINE, 0);
         double ethanol = getIntent().getDoubleExtra(EXTRA_ETHANOL, 0);
         int gasolineConsumption = getIntent().getIntExtra(EXTRA_GASOLINE_CONSUMPTION, 0);
@@ -35,6 +40,17 @@ public class ResultActivity extends Activity {
                 ? calculateByConsumption(gasoline, ethanol, gasolineConsumption, ethanolConsumption)
                 : calculateByDefaultRule(gasoline, ethanol);
         resultText.setText(result);
+        savingsValueText.setText(formatSavings(
+                calculateSavings(gasoline, ethanol, gasolineConsumption, ethanolConsumption)
+        ));
+
+        findViewById(R.id.recalculate_button).setOnClickListener(view -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra(MainActivity.EXTRA_CLEAR_INPUTS, true);
+            startActivity(intent);
+            finish();
+        });
 
         FrameLayout adContainer = findViewById(R.id.bottom_car_ad_container);
         bottomCarAd = AdMobBanner.loadResultBanner(this, adContainer);
@@ -59,6 +75,26 @@ public class ResultActivity extends Activity {
         return ethanol / gasoline < 0.7
                 ? R.string.result_ethanol
                 : R.string.result_gasoline;
+    }
+
+    private double calculateSavings(
+            double gasoline,
+            double ethanol,
+            int gasolineConsumption,
+            int ethanolConsumption
+    ) {
+        if (hasConsumptionValues(gasolineConsumption, ethanolConsumption)) {
+            double gasolineCostPerKm = gasoline / gasolineConsumption;
+            double ethanolCostPerKm = ethanol / ethanolConsumption;
+            return Math.abs(gasolineCostPerKm - ethanolCostPerKm);
+        }
+
+        return Math.abs((gasoline * 0.7) - ethanol);
+    }
+
+    private String formatSavings(double savings) {
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        return currencyFormat.format(savings) + " por litro";
     }
 
     @Override

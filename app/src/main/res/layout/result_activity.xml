@@ -43,6 +43,42 @@
         android:contentDescription="@string/result_car_description"
         android:src="@drawable/car" />
 
+    <TextView
+        android:id="@+id/savings_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:text="@string/savings_title"
+        android:textColor="@color/legacy_blue"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/savings_value_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:textColor="@color/legacy_orange"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/recalculate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:background="@color/legacy_blue"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:text="@string/btn_recalculate"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
     <FrameLayout
         android:id="@+id/bottom_car_ad_container"
         android:layout_width="match_parent"
