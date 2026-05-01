@@ -28,8 +28,8 @@ public class ResultActivity extends Activity {
         TextView savingsValueText = findViewById(R.id.savings_value_text);
         double gasoline = getIntent().getDoubleExtra(EXTRA_GASOLINE, 0);
         double ethanol = getIntent().getDoubleExtra(EXTRA_ETHANOL, 0);
-        int gasolineConsumption = getIntent().getIntExtra(EXTRA_GASOLINE_CONSUMPTION, 0);
-        int ethanolConsumption = getIntent().getIntExtra(EXTRA_ETHANOL_CONSUMPTION, 0);
+        double gasolineConsumption = getIntent().getDoubleExtra(EXTRA_GASOLINE_CONSUMPTION, 0);
+        double ethanolConsumption = getIntent().getDoubleExtra(EXTRA_ETHANOL_CONSUMPTION, 0);
 
         if (gasoline <= 0 || ethanol <= 0) {
             resultText.setText(R.string.invalid_result);
@@ -56,15 +56,15 @@ public class ResultActivity extends Activity {
         bottomCarAd = AdMobBanner.loadResultBanner(this, adContainer);
     }
 
-    private boolean hasConsumptionValues(int gasolineConsumption, int ethanolConsumption) {
+    private boolean hasConsumptionValues(double gasolineConsumption, double ethanolConsumption) {
         return gasolineConsumption > 0 && ethanolConsumption > 0;
     }
 
     private int calculateByConsumption(
             double gasoline,
             double ethanol,
-            int gasolineConsumption,
-            int ethanolConsumption
+            double gasolineConsumption,
+            double ethanolConsumption
     ) {
         return ethanol * gasolineConsumption < gasoline * ethanolConsumption
                 ? R.string.result_ethanol
@@ -80,8 +80,8 @@ public class ResultActivity extends Activity {
     private double calculateSavings(
             double gasoline,
             double ethanol,
-            int gasolineConsumption,
-            int ethanolConsumption
+            double gasolineConsumption,
+            double ethanolConsumption
     ) {
         if (hasConsumptionValues(gasolineConsumption, ethanolConsumption)) {
             double gasolineCostPerKm = gasoline / gasolineConsumption;
