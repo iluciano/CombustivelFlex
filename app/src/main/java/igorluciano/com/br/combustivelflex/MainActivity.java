@@ -41,8 +41,8 @@ public class MainActivity extends Activity {
         ethanolConsumptionInput = findViewById(R.id.ethanol_consumption_input);
         setupPriceInput(gasolineInput);
         setupPriceInput(ethanolInput);
-        setupDecimalInput(gasolineConsumptionInput);
-        setupDecimalInput(ethanolConsumptionInput);
+        setupPriceInput(gasolineConsumptionInput);
+        setupPriceInput(ethanolConsumptionInput);
         setupAutoCalculation();
 
         findViewById(R.id.clear_button).setOnClickListener(view -> {
@@ -155,10 +155,6 @@ public class MainActivity extends Activity {
                 watcher.padDecimals();
             }
         });
-    }
-
-    private void setupDecimalInput(EditText input) {
-        input.addTextChangedListener(new DecimalInputTextWatcher(input));
     }
 
     private void setupAutoCalculation() {
@@ -339,65 +335,4 @@ public class MainActivity extends Activity {
         }
     }
 
-    private static final class DecimalInputTextWatcher implements TextWatcher {
-        private static final int MAX_DIGITS = 4;
-        private static final int MAX_INTEGER_DIGITS = 2;
-
-        private final EditText input;
-        private boolean updating;
-
-        private DecimalInputTextWatcher(EditText input) {
-            this.input = input;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence text, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence text, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            if (updating) {
-                return;
-            }
-
-            String original = editable.toString();
-            String formatted = formatDecimalInput(original);
-            if (original.equals(formatted)) {
-                return;
-            }
-
-            updating = true;
-            input.setText(formatted);
-            input.setSelection(formatted.length());
-            updating = false;
-        }
-
-        private String formatDecimalInput(String value) {
-            StringBuilder digits = new StringBuilder();
-
-            for (int index = 0; index < value.length(); index++) {
-                char character = value.charAt(index);
-                if (Character.isDigit(character) && digits.length() < MAX_DIGITS) {
-                    digits.append(character);
-                }
-            }
-
-            if (digits.length() <= 1) {
-                return digits.toString();
-            }
-
-            int integerDigits = Math.min(digits.length(), MAX_INTEGER_DIGITS);
-            String integerPart = digits.substring(0, integerDigits);
-            String decimalPart = digits.substring(integerDigits);
-            if (decimalPart.isEmpty()) {
-                return integerPart;
-            }
-
-            return integerPart + "." + decimalPart;
-        }
-    }
 }

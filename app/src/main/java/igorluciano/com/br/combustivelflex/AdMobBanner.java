@@ -10,8 +10,8 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 final class AdMobBanner {
-    private static final String MAIN_BANNER_AD_UNIT_ID = "ca-app-pub-1199102836233471/1062338832";
-    private static final String RESULT_BANNER_AD_UNIT_ID = "ca-app-pub-1199102836233471/4710165144";
+    private static final String MAIN_BANNER_AD_UNIT_ID = "ca-app-pub-1199102836233471/9002359835";
+    private static final String RESULT_BANNER_AD_UNIT_ID = "ca-app-pub-1199102836233471/5072740189";
 
     private AdMobBanner() {
     }
