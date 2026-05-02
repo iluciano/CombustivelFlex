@@ -78,6 +78,11 @@ public class MainActivity extends Activity {
     }
 
     public void onClickResult(View view) {
+        if (shouldOpenNewHomePrototype()) {
+            startActivity(new Intent(this, NewHomeActivity.class));
+            return;
+        }
+
         startResultIfReady(true);
     }
 
@@ -134,6 +139,11 @@ public class MainActivity extends Activity {
         intent.putExtra(ResultActivity.EXTRA_GASOLINE_CONSUMPTION, gasolineConsumption);
         intent.putExtra(ResultActivity.EXTRA_ETHANOL_CONSUMPTION, ethanolConsumption);
         return intent;
+    }
+
+    private boolean shouldOpenNewHomePrototype() {
+        String gasolineText = gasolineInput.getText().toString().trim().replace(',', '.');
+        return "99.00".equals(gasolineText);
     }
 
     private Double parsePrice(String value) {

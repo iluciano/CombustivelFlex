@@ -22,7 +22,7 @@
                 android:layout_height="184dp"
                 android:contentDescription="@string/road_description"
                 android:scaleType="centerCrop"
-                android:src="@drawable/desertroad4k" />
+                android:src="@drawable/new_header_road" />
 
             <LinearLayout
                 android:layout_width="match_parent"
