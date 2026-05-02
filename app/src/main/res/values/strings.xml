@@ -21,4 +21,19 @@
     <string name="road_description">Estrada</string>
     <string name="gas_station_description">Posto de combustivel</string>
     <string name="admob_app_id">ca-app-pub-1199102836233471~8079530547</string>
+    <string name="new_home_title">COMBUSTIVEL FLEX</string>
+    <string name="new_home_subtitle">Qual o melhor combustivel para o seu carro?</string>
+    <string name="new_gasoline_price_label">Preco da gasolina</string>
+    <string name="new_ethanol_price_label">Preco do etanol</string>
+    <string name="new_price_hint">R$ 0,00</string>
+    <string name="new_gasoline_initial">G</string>
+    <string name="new_ethanol_initial">E</string>
+    <string name="new_consumption_title">Meu carro faz</string>
+    <string name="new_consumption_hint">0,0</string>
+    <string name="new_gasoline_consumption_caption">km/L\nna gasolina</string>
+    <string name="new_ethanol_consumption_caption">km/L\nno etanol</string>
+    <string name="new_tab_home">Inicio</string>
+    <string name="new_tab_history">Historico</string>
+    <string name="new_tab_stations">Postos</string>
+    <string name="new_tab_more">Mais</string>
 </resources>
