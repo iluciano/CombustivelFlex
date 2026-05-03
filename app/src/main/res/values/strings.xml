@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Combustivel Flex</string>
+    <string name="app_name">Combustível Flex</string>
     <string name="hint_gasoline">Digite o valor da gasolina</string>
     <string name="hint_ethanol">Digite o valor do etanol</string>
     <string name="btn_calculate">Calcular</string>
@@ -11,7 +11,7 @@
     <string name="consumption_prefix">Meu carro faz</string>
     <string name="gasoline_consumption_suffix">km/L na gasolina.</string>
     <string name="ethanol_consumption_suffix">km/L no etanol.</string>
-    <string name="result_title">O melhor combústivel para o seu carro é:</string>
+    <string name="result_title">O melhor combustível para o seu carro é:</string>
     <string name="result_ethanol">ETANOL</string>
     <string name="result_gasoline">GASOLINA</string>
     <string name="savings_title">Economia estimada:</string>
@@ -19,12 +19,12 @@
     <string name="invalid_result">Volte e digite valores válidos.</string>
     <string name="result_car_description">Carro</string>
     <string name="road_description">Estrada</string>
-    <string name="gas_station_description">Posto de combustivel</string>
+    <string name="gas_station_description">Posto de combustível</string>
     <string name="admob_app_id">ca-app-pub-1199102836233471~8079530547</string>
     <string name="new_home_title">COMBUSTÍVEL FLEX</string>
     <string name="new_home_title_fuel">COMBUSTÍVEL</string>
     <string name="new_home_title_flex">FLEX</string>
-    <string name="new_home_subtitle">Qual o melhor combustivel para o seu carro?</string>
+    <string name="new_home_subtitle">Qual o melhor combustível para o seu carro?</string>
     <string name="new_gasoline_price_label">Preco da gasolina</string>
     <string name="new_ethanol_price_label">Preco do etanol</string>
     <string name="new_price_hint">R$ 0,00</string>
@@ -38,6 +38,6 @@
     <string name="new_tab_history">Historico</string>
     <string name="new_tab_stations">Postos</string>
     <string name="new_tab_more">Mais</string>
-    <string name="new_result_title">O melhor combustivel\npara o seu carro é:</string>
+    <string name="new_result_title">O melhor combustível\npara o seu carro é:</string>
     <string name="new_comparison_title">Comparativo de custo por km</string>
 </resources>
