@@ -15,4 +15,7 @@
     <color name="new_orange_light">#FFF7ED</color>
     <color name="new_green">#0F9F5A</color>
     <color name="new_green_light">#ECFDF3</color>
+    <color name="new_green_soft">#ABEFC6</color>
+    <color name="new_green_result">#D1FADF</color>
+    <color name="new_panel">#F2F4F7</color>
 </resources>

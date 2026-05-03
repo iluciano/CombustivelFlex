@@ -276,6 +276,13 @@
                     android:textColor="@color/new_blue"
                     android:textSize="14sp"
                     android:textStyle="bold" />
+
+                <FrameLayout
+                    android:id="@+id/new_home_ad_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:minHeight="50dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

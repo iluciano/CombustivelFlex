@@ -38,4 +38,6 @@
     <string name="new_tab_history">Historico</string>
     <string name="new_tab_stations">Postos</string>
     <string name="new_tab_more">Mais</string>
+    <string name="new_result_title">O melhor combustivel\npara o seu carro é:</string>
+    <string name="new_comparison_title">Comparativo de custo por km</string>
 </resources>

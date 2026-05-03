@@ -1,6 +1,7 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,12 +10,20 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class NewHomeActivity extends Activity {
+    public static final String EXTRA_CLEAR_INPUTS = "newClearInputs";
+
     private EditText gasolinePriceInput;
     private EditText ethanolPriceInput;
     private EditText gasolineConsumptionInput;
     private EditText ethanolConsumptionInput;
+    private AdView bottomAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +40,20 @@ public class NewHomeActivity extends Activity {
         setupPriceInput(gasolineConsumptionInput);
         setupPriceInput(ethanolConsumptionInput);
 
+        findViewById(R.id.new_calculate_button).setOnClickListener(view -> startResultIfReady());
         findViewById(R.id.new_clear_button).setOnClickListener(view -> clearInputs());
+
+        new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
+        FrameLayout adContainer = findViewById(R.id.new_home_ad_container);
+        bottomAd = AdMobBanner.loadMainBanner(this, adContainer);
+        clearInputsIfRequested(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        clearInputsIfRequested(intent);
     }
 
     private void clearInputs() {
@@ -40,6 +62,81 @@ public class NewHomeActivity extends Activity {
         gasolineConsumptionInput.setText("");
         ethanolConsumptionInput.setText("");
         gasolinePriceInput.requestFocus();
+    }
+
+    private void clearInputsIfRequested(Intent intent) {
+        if (intent == null || !intent.getBooleanExtra(EXTRA_CLEAR_INPUTS, false)) {
+            return;
+        }
+
+        clearInputs();
+        intent.removeExtra(EXTRA_CLEAR_INPUTS);
+    }
+
+    private void startResultIfReady() {
+        String gasolineText = gasolinePriceInput.getText().toString();
+        String ethanolText = ethanolPriceInput.getText().toString();
+        String gasolineConsumptionText = gasolineConsumptionInput.getText().toString();
+        String ethanolConsumptionText = ethanolConsumptionInput.getText().toString();
+
+        if (TextUtils.isEmpty(gasolineText) || TextUtils.isEmpty(ethanolText)) {
+            Toast.makeText(this, R.string.enter_values, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Double gasoline = parsePrice(gasolineText);
+        Double ethanol = parsePrice(ethanolText);
+        if (gasoline == null || ethanol == null || gasoline <= 0 || ethanol <= 0) {
+            Toast.makeText(this, R.string.enter_valid_values, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Double gasolineConsumption = parseConsumption(gasolineConsumptionText);
+        Double ethanolConsumption = parseConsumption(ethanolConsumptionText);
+        boolean hasGasolineConsumption = !TextUtils.isEmpty(gasolineConsumptionText);
+        boolean hasEthanolConsumption = !TextUtils.isEmpty(ethanolConsumptionText);
+        if (hasGasolineConsumption != hasEthanolConsumption
+                || gasolineConsumption == null
+                || ethanolConsumption == null) {
+            Toast.makeText(this, R.string.enter_both_consumptions, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, NewResultActivity.class);
+        intent.putExtra(ResultActivity.EXTRA_GASOLINE, gasoline);
+        intent.putExtra(ResultActivity.EXTRA_ETHANOL, ethanol);
+        intent.putExtra(ResultActivity.EXTRA_GASOLINE_CONSUMPTION, gasolineConsumption);
+        intent.putExtra(ResultActivity.EXTRA_ETHANOL_CONSUMPTION, ethanolConsumption);
+        startActivity(intent);
+    }
+
+    private Double parsePrice(String value) {
+        try {
+            return Double.parseDouble(value.trim().replace(',', '.'));
+        } catch (NumberFormatException exception) {
+            return null;
+        }
+    }
+
+    private Double parseConsumption(String value) {
+        if (TextUtils.isEmpty(value)) {
+            return 0.0;
+        }
+
+        try {
+            double consumption = Double.parseDouble(value.trim().replace(',', '.'));
+            return consumption > 0 ? consumption : null;
+        } catch (NumberFormatException exception) {
+            return null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (bottomAd != null) {
+            bottomAd.destroy();
+        }
+        super.onDestroy();
     }
 
     private void setupTransparentStatusBar() {
