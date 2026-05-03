@@ -96,6 +96,11 @@
     <string name="new_settings_rate">Avaliar o app</string>
     <string name="new_settings_share">Compartilhar com amigos</string>
     <string name="new_settings_share_title">Compartilhar app</string>
+    <string name="new_settings_share_message">Seu amigo quer que você também economize na hora de abastecer.\n\n%1$s</string>
     <string name="new_settings_about">Sobre o Combustível Flex</string>
     <string name="new_settings_version_format">Versão %1$s</string>
+    <string name="new_home_update_defaults_title">Atualizar consumo padrão?</string>
+    <string name="new_home_update_defaults_message">Os consumos informados são diferentes dos valores salvos em Configurações. Deseja substituir os valores salvos?</string>
+    <string name="new_home_update_defaults_yes">Substituir</string>
+    <string name="new_home_update_defaults_no">Agora não</string>
 </resources>

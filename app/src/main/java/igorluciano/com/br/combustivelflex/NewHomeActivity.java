@@ -1,12 +1,11 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -59,6 +58,7 @@ public class NewHomeActivity extends Activity {
         FrameLayout adContainer = findViewById(R.id.new_home_ad_container);
         bottomAd = AdMobBanner.loadMainBanner(this, adContainer);
         clearInputsIfRequested(getIntent());
+        fillDefaultConsumptionsIfEmpty();
     }
 
     @Override
@@ -68,11 +68,16 @@ public class NewHomeActivity extends Activity {
         clearInputsIfRequested(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fillDefaultConsumptionsIfEmpty();
+    }
+
     private void clearInputs() {
         gasolinePriceInput.setText("");
         ethanolPriceInput.setText("");
-        gasolineConsumptionInput.setText("");
-        ethanolConsumptionInput.setText("");
+        fillDefaultConsumptions();
         gasolinePriceInput.requestFocus();
     }
 
@@ -120,12 +125,64 @@ public class NewHomeActivity extends Activity {
             return;
         }
 
+        if (shouldAskToUpdateDefaultConsumption(gasolineConsumption, ethanolConsumption)) {
+            showUpdateDefaultConsumptionDialog(
+                    gasoline,
+                    ethanol,
+                    gasolineConsumption,
+                    ethanolConsumption
+            );
+            return;
+        }
+
+        startResult(gasoline, ethanol, gasolineConsumption, ethanolConsumption);
+    }
+
+    private void startResult(
+            double gasoline,
+            double ethanol,
+            double gasolineConsumption,
+            double ethanolConsumption
+    ) {
         Intent intent = new Intent(this, NewResultActivity.class);
         intent.putExtra(ResultActivity.EXTRA_GASOLINE, gasoline);
         intent.putExtra(ResultActivity.EXTRA_ETHANOL, ethanol);
         intent.putExtra(ResultActivity.EXTRA_GASOLINE_CONSUMPTION, gasolineConsumption);
         intent.putExtra(ResultActivity.EXTRA_ETHANOL_CONSUMPTION, ethanolConsumption);
         startActivity(intent);
+    }
+
+    private boolean shouldAskToUpdateDefaultConsumption(
+            double gasolineConsumption,
+            double ethanolConsumption
+    ) {
+        double savedGasolineConsumption = NewSettingsStore.getGasolineConsumption(this);
+        double savedEthanolConsumption = NewSettingsStore.getEthanolConsumption(this);
+        if (savedGasolineConsumption <= 0 || savedEthanolConsumption <= 0) {
+            return false;
+        }
+
+        return hasMeaningfulDifference(savedGasolineConsumption, gasolineConsumption)
+                || hasMeaningfulDifference(savedEthanolConsumption, ethanolConsumption);
+    }
+
+    private void showUpdateDefaultConsumptionDialog(
+            double gasoline,
+            double ethanol,
+            double gasolineConsumption,
+            double ethanolConsumption
+    ) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.new_home_update_defaults_title)
+                .setMessage(R.string.new_home_update_defaults_message)
+                .setNegativeButton(R.string.new_home_update_defaults_no, (dialog, which) ->
+                        startResult(gasoline, ethanol, gasolineConsumption, ethanolConsumption))
+                .setPositiveButton(R.string.new_home_update_defaults_yes, (dialog, which) -> {
+                    NewSettingsStore.setGasolineConsumption(this, gasolineConsumption);
+                    NewSettingsStore.setEthanolConsumption(this, ethanolConsumption);
+                    startResult(gasoline, ethanol, gasolineConsumption, ethanolConsumption);
+                })
+                .show();
     }
 
     private Double parsePrice(String value) {
@@ -159,6 +216,34 @@ public class NewHomeActivity extends Activity {
         return value > 0 ? value : 0.0;
     }
 
+    private void fillDefaultConsumptionsIfEmpty() {
+        if (!TextUtils.isEmpty(gasolineConsumptionInput.getText().toString())
+                || !TextUtils.isEmpty(ethanolConsumptionInput.getText().toString())) {
+            return;
+        }
+
+        fillDefaultConsumptions();
+    }
+
+    private void fillDefaultConsumptions() {
+        double gasolineConsumption = NewSettingsStore.getGasolineConsumption(this);
+        double ethanolConsumption = NewSettingsStore.getEthanolConsumption(this);
+        gasolineConsumptionInput.setText(gasolineConsumption > 0
+                ? formatInputConsumption(gasolineConsumption)
+                : "");
+        ethanolConsumptionInput.setText(ethanolConsumption > 0
+                ? formatInputConsumption(ethanolConsumption)
+                : "");
+    }
+
+    private String formatInputConsumption(double value) {
+        return String.format(java.util.Locale.US, "%.2f", value);
+    }
+
+    private boolean hasMeaningfulDifference(double first, double second) {
+        return Math.abs(first - second) >= 0.01;
+    }
+
     @Override
     protected void onDestroy() {
         if (bottomAd != null) {
@@ -176,123 +261,12 @@ public class NewHomeActivity extends Activity {
     }
 
     private void setupPriceInput(EditText input) {
-        PriceInputTextWatcher watcher = new PriceInputTextWatcher(input);
+        MaskedDecimalTextWatcher watcher = new MaskedDecimalTextWatcher(input);
         input.addTextChangedListener(watcher);
         input.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 watcher.padDecimals();
             }
         });
-    }
-
-    private static final class PriceInputTextWatcher implements TextWatcher {
-        private static final int MAX_DIGITS = 4;
-        private static final int MAX_INTEGER_DIGITS = 2;
-        private static final int MIN_DECIMAL_DIGITS = 2;
-
-        private final EditText input;
-        private boolean updating;
-        private boolean deletingDecimalPoint;
-
-        private PriceInputTextWatcher(EditText input) {
-            this.input = input;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence text, int start, int count, int after) {
-            deletingDecimalPoint = count == 1
-                    && after == 0
-                    && start < text.length()
-                    && text.charAt(start) == '.';
-        }
-
-        @Override
-        public void onTextChanged(CharSequence text, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            if (updating) {
-                return;
-            }
-
-            if (deletingDecimalPoint) {
-                deletingDecimalPoint = false;
-                return;
-            }
-
-            String original = editable.toString();
-            String formatted = formatPriceInput(original);
-            if (original.equals(formatted)) {
-                return;
-            }
-
-            updateText(formatted);
-        }
-
-        private void padDecimals() {
-            if (updating) {
-                return;
-            }
-
-            String original = input.getText().toString();
-            if (TextUtils.isEmpty(original)) {
-                return;
-            }
-
-            String formatted = padDecimalPart(formatPriceInput(original));
-            if (!original.equals(formatted)) {
-                updateText(formatted);
-            }
-        }
-
-        private void updateText(String value) {
-            updating = true;
-            input.setText(value);
-            input.setSelection(value.length());
-            updating = false;
-        }
-
-        private String formatPriceInput(String value) {
-            String digits = collectDigits(value);
-            if (digits.isEmpty()) {
-                return "";
-            }
-
-            int integerDigits = digits.length() < MAX_DIGITS
-                    ? 1
-                    : MAX_INTEGER_DIGITS;
-            String integerPart = digits.substring(0, integerDigits);
-            String decimalPart = digits.substring(integerDigits);
-            return integerPart + "." + decimalPart;
-        }
-
-        private String padDecimalPart(String value) {
-            int pointIndex = value.indexOf('.');
-            if (pointIndex < 0) {
-                return value + ".00";
-            }
-
-            String integerPart = value.substring(0, pointIndex);
-            String decimalPart = value.substring(pointIndex + 1);
-            while (decimalPart.length() < MIN_DECIMAL_DIGITS) {
-                decimalPart += "0";
-            }
-
-            return integerPart + "." + decimalPart;
-        }
-
-        private String collectDigits(String value) {
-            StringBuilder digits = new StringBuilder();
-
-            for (int index = 0; index < value.length(); index++) {
-                char character = value.charAt(index);
-                if (Character.isDigit(character) && digits.length() < MAX_DIGITS) {
-                    digits.append(character);
-                }
-            }
-
-            return digits.toString();
-        }
     }
 }

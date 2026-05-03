@@ -30,7 +30,7 @@ public class NewSettingsActivity extends Activity {
             "market://details?id=igorluciano.com.br.combustivelflex";
 
     private final DecimalFormat consumptionFormat = new DecimalFormat(
-            "0.0",
+            "0.0#",
             DecimalFormatSymbols.getInstance(new Locale("pt", "BR"))
     );
 
@@ -123,13 +123,20 @@ public class NewSettingsActivity extends Activity {
     private void showConsumptionDialog(boolean gasoline) {
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        MaskedDecimalTextWatcher watcher = new MaskedDecimalTextWatcher(input);
         double currentValue = gasoline
                 ? NewSettingsStore.getGasolineConsumption(this)
                 : NewSettingsStore.getEthanolConsumption(this);
         if (currentValue > 0) {
-            input.setText(String.format(Locale.US, "%.1f", currentValue));
+            input.setText(String.format(Locale.US, "%.2f", currentValue));
             input.setSelection(input.getText().length());
         }
+        input.addTextChangedListener(watcher);
+        input.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                watcher.padDecimals();
+            }
+        });
 
         new AlertDialog.Builder(this)
                 .setTitle(gasoline
@@ -138,8 +145,10 @@ public class NewSettingsActivity extends Activity {
                 .setMessage(R.string.new_settings_consumption_dialog_message)
                 .setView(input)
                 .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok, (dialog, which) ->
-                        saveConsumption(gasoline, input.getText().toString()))
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    watcher.padDecimals();
+                    saveConsumption(gasoline, input.getText().toString());
+                })
                 .show();
     }
 
@@ -213,7 +222,8 @@ public class NewSettingsActivity extends Activity {
     private void shareApp() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, PLAY_STORE_URL);
+        intent.putExtra(Intent.EXTRA_TITLE, getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.new_settings_share_message, PLAY_STORE_URL));
         startActivity(Intent.createChooser(intent, getString(R.string.new_settings_share_title)));
     }
 
