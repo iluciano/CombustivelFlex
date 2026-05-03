@@ -30,6 +30,9 @@
             android:name=".NewStationsActivity"
             android:exported="false" />
         <activity
+            android:name=".NewTipsActivity"
+            android:exported="false" />
+        <activity
             android:name=".NewStartActivity"
             android:exported="false" />
         <activity

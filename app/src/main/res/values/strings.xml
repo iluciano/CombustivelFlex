@@ -71,4 +71,13 @@
     <string name="new_stations_best_price_subtitle">Compare preços e escolha sempre a melhor opção.</string>
     <string name="new_stations_routes_title">Rotas rápidas</string>
     <string name="new_stations_routes_subtitle">Veja o caminho mais rápido até o posto escolhido.</string>
+    <string name="new_tips_title">Dicas de economia</string>
+    <string name="new_tip_tire_title">Mantenha os pneus calibrados</string>
+    <string name="new_tip_tire_subtitle">Pneus calibrados podem economizar até 10% de combustível.</string>
+    <string name="new_tip_acceleration_title">Evite acelerações bruscas</string>
+    <string name="new_tip_acceleration_subtitle">Acelerações suaves podem reduzir o consumo em até 20%.</string>
+    <string name="new_tip_maintenance_title">Faça revisões periódicas</string>
+    <string name="new_tip_maintenance_subtitle">Um carro revisado pode economizar até 15% de combustível.</string>
+    <string name="new_tip_ac_title">Use o ar-condicionado com moderação</string>
+    <string name="new_tip_ac_subtitle">O ar-condicionado pode aumentar o consumo em até 20%.</string>
 </resources>
