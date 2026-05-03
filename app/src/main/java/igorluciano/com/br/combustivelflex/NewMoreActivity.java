@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
 
 public class NewMoreActivity extends Activity {
     @Override
@@ -19,8 +18,7 @@ public class NewMoreActivity extends Activity {
                 view -> startActivity(new Intent(this, NewTipsActivity.class))
         );
         findViewById(R.id.new_more_settings_card).setOnClickListener(
-                view -> Toast.makeText(this, R.string.new_feature_coming_soon, Toast.LENGTH_SHORT)
-                        .show()
+                view -> startActivity(new Intent(this, NewSettingsActivity.class))
         );
         findViewById(R.id.new_more_home_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewStartActivity.class))

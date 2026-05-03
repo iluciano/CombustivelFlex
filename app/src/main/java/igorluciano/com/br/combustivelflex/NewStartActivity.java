@@ -36,7 +36,7 @@ public class NewStartActivity extends Activity {
                 view -> startActivity(new Intent(this, NewTipsActivity.class))
         );
         findViewById(R.id.new_start_settings_card).setOnClickListener(
-                view -> showComingSoon()
+                view -> startActivity(new Intent(this, NewSettingsActivity.class))
         );
         findViewById(R.id.new_start_more_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewMoreActivity.class))

@@ -103,10 +103,16 @@ public class NewHomeActivity extends Activity {
             return;
         }
 
-        Double gasolineConsumption = parseConsumption(gasolineConsumptionText);
-        Double ethanolConsumption = parseConsumption(ethanolConsumptionText);
         boolean hasGasolineConsumption = !TextUtils.isEmpty(gasolineConsumptionText);
         boolean hasEthanolConsumption = !TextUtils.isEmpty(ethanolConsumptionText);
+        Double gasolineConsumption = hasGasolineConsumption
+                ? parseConsumption(gasolineConsumptionText)
+                : getDefaultGasolineConsumption();
+        Double ethanolConsumption = hasEthanolConsumption
+                ? parseConsumption(ethanolConsumptionText)
+                : getDefaultEthanolConsumption();
+        hasGasolineConsumption = gasolineConsumption != null && gasolineConsumption > 0;
+        hasEthanolConsumption = ethanolConsumption != null && ethanolConsumption > 0;
         if (hasGasolineConsumption != hasEthanolConsumption
                 || gasolineConsumption == null
                 || ethanolConsumption == null) {
@@ -141,6 +147,16 @@ public class NewHomeActivity extends Activity {
         } catch (NumberFormatException exception) {
             return null;
         }
+    }
+
+    private Double getDefaultGasolineConsumption() {
+        double value = NewSettingsStore.getGasolineConsumption(this);
+        return value > 0 ? value : 0.0;
+    }
+
+    private Double getDefaultEthanolConsumption() {
+        double value = NewSettingsStore.getEthanolConsumption(this);
+        return value > 0 ? value : 0.0;
     }
 
     @Override
