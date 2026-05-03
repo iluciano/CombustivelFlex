@@ -30,6 +30,7 @@ public class NewHistoryActivity extends Activity {
         findViewById(R.id.new_history_home_tab).setOnClickListener(view -> {
             Intent intent = new Intent(this, NewHomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra(NewHomeActivity.EXTRA_CLEAR_INPUTS, true);
             startActivity(intent);
             finish();
         });
