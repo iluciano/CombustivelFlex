@@ -18,9 +18,13 @@ import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -45,6 +49,7 @@ public class NewSettingsActivity extends Activity {
     private TextView ethanolConsumptionText;
     private Switch notificationsSwitch;
     private Switch priceReminderSwitch;
+    private AdView bottomAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +96,19 @@ public class NewSettingsActivity extends Activity {
                 view -> startActivity(new Intent(this, NewMoreActivity.class))
         );
 
+        new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
+        FrameLayout adContainer = findViewById(R.id.new_settings_ad_container);
+        bottomAd = AdMobBanner.loadSettingsBanner(this, adContainer);
+
         renderSettings();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (bottomAd != null) {
+            bottomAd.destroy();
+        }
+        super.onDestroy();
     }
 
     private void renderSettings() {

@@ -321,6 +321,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/new_divider" />
+
+            <FrameLayout
+                android:id="@+id/new_settings_ad_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:minHeight="50dp" />
         </LinearLayout>
     </ScrollView>
 
