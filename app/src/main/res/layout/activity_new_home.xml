@@ -19,7 +19,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="184dp"
+                android:layout_height="220dp"
                 android:contentDescription="@string/road_description"
                 android:scaleType="centerCrop"
                 android:src="@drawable/new_header_road" />
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="-24dp"
+                android:layout_marginTop="-38dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/new_card_background"
                 android:elevation="5dp"
