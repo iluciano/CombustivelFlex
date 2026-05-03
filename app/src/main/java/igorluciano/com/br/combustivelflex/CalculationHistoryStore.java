@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 final class CalculationHistoryStore {
     private static final String PREFERENCES_NAME = "calculation_history";
     private static final String KEY_ITEMS = "items";
@@ -35,6 +38,24 @@ final class CalculationHistoryStore {
         preferences.edit().putString(KEY_ITEMS, updatedItems.toString()).apply();
     }
 
+    static List<CalculationHistoryItem> list(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(
+                PREFERENCES_NAME,
+                Context.MODE_PRIVATE
+        );
+        JSONArray items = parseItems(preferences.getString(KEY_ITEMS, "[]"));
+        List<CalculationHistoryItem> historyItems = new ArrayList<>();
+
+        for (int index = 0; index < items.length(); index++) {
+            JSONObject json = items.optJSONObject(index);
+            if (json != null) {
+                historyItems.add(fromJson(json));
+            }
+        }
+
+        return historyItems;
+    }
+
     private static JSONArray parseItems(String value) {
         try {
             return new JSONArray(value);
@@ -58,5 +79,18 @@ final class CalculationHistoryStore {
         }
 
         return json;
+    }
+
+    private static CalculationHistoryItem fromJson(JSONObject json) {
+        return new CalculationHistoryItem(
+                json.optLong("createdAt"),
+                json.optDouble("gasoline"),
+                json.optDouble("ethanol"),
+                json.optDouble("gasolineConsumption"),
+                json.optDouble("ethanolConsumption"),
+                json.optString("result"),
+                json.optDouble("savings"),
+                json.optBoolean("usedConsumption")
+        );
     }
 }

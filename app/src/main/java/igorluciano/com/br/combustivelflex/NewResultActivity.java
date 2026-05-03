@@ -80,6 +80,9 @@ public class NewResultActivity extends Activity {
             startActivity(intent);
             finish();
         });
+        findViewById(R.id.new_result_history_tab).setOnClickListener(
+                view -> startActivity(new Intent(this, NewHistoryActivity.class))
+        );
 
         FrameLayout adContainer = findViewById(R.id.new_result_ad_container);
         bottomAd = AdMobBanner.loadResultBanner(this, adContainer);

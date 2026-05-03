@@ -42,6 +42,9 @@ public class NewHomeActivity extends Activity {
 
         findViewById(R.id.new_calculate_button).setOnClickListener(view -> startResultIfReady());
         findViewById(R.id.new_clear_button).setOnClickListener(view -> clearInputs());
+        findViewById(R.id.new_home_history_tab).setOnClickListener(
+                view -> startActivity(new Intent(this, NewHistoryActivity.class))
+        );
 
         new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
         FrameLayout adContainer = findViewById(R.id.new_home_ad_container);

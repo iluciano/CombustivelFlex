@@ -24,6 +24,9 @@
             android:name=".NewResultActivity"
             android:exported="false" />
         <activity
+            android:name=".NewHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

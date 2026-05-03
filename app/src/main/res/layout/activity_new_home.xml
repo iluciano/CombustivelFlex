@@ -298,6 +298,7 @@
         android:paddingEnd="8dp">
 
         <TextView
+            android:id="@+id/new_home_history_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

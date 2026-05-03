@@ -40,4 +40,10 @@
     <string name="new_tab_more">Mais</string>
     <string name="new_result_title">O melhor combustível\npara o seu carro é:</string>
     <string name="new_comparison_title">Comparativo de custo por km</string>
+    <string name="new_history_title">Histórico de cálculos</string>
+    <string name="new_history_subtitle">Últimos 25 cálculos realizados neste aparelho.</string>
+    <string name="new_history_empty">Nenhum cálculo salvo ainda.</string>
+    <string name="new_history_savings_label">Economia:</string>
+    <string name="new_history_prices_format">Gasolina %1$s • Etanol %2$s</string>
+    <string name="new_history_consumption_format">Consumo: %1$.2f km/L gasolina • %2$.2f km/L etanol</string>
 </resources>
