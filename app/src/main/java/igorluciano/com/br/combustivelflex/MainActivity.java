@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
 
     public void onClickResult(View view) {
         if (shouldOpenNewHomePrototype()) {
-            startActivity(new Intent(this, NewHomeActivity.class));
+            startActivity(new Intent(this, NewStartActivity.class));
             return;
         }
 

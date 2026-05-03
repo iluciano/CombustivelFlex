@@ -48,4 +48,16 @@
     <string name="new_history_consumption_format">Consumo: %1$.2f km/L gasolina • %2$.2f km/L etanol</string>
     <string name="savings_per_liter_format">%1$s por litro</string>
     <string name="cost_per_km_format">%1$s/km</string>
+    <string name="new_start_calculate_title">Calcular combustível</string>
+    <string name="new_start_calculate_subtitle">Veja qual opção é mais econômica para você</string>
+    <string name="new_start_history_subtitle">Acompanhe seus cálculos anteriores</string>
+    <string name="new_start_stations_title">Postos próximos</string>
+    <string name="new_start_stations_subtitle">Encontre postos de gasolina perto de você</string>
+    <string name="new_start_tips_title">Dicas de economia</string>
+    <string name="new_start_tips_subtitle">Aprenda a economizar combustível no dia a dia</string>
+    <string name="new_start_settings_title">Configurações</string>
+    <string name="new_start_settings_subtitle">Personalize suas preferências e o aplicativo</string>
+    <string name="new_start_open_option">Abrir opção</string>
+    <string name="new_badge_new">Novo</string>
+    <string name="new_feature_coming_soon">Funcionalidade em breve.</string>
 </resources>
