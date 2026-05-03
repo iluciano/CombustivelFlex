@@ -6,14 +6,26 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 
 public class NewStartActivity extends Activity {
+    private static final int UPDATE_REQUEST_CODE = 1001;
+
+    private AppUpdateManager appUpdateManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupTransparentStatusBar();
         setContentView(R.layout.activity_new_start);
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+        checkForAppUpdate();
 
         findViewById(R.id.new_start_calculate_card).setOnClickListener(view -> {
             Intent intent = new Intent(this, NewHomeActivity.class);
@@ -43,8 +55,10 @@ public class NewStartActivity extends Activity {
         );
     }
 
-    private void showComingSoon() {
-        Toast.makeText(this, R.string.new_feature_coming_soon, Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resumeAppUpdateIfNeeded();
     }
 
     private void setupTransparentStatusBar() {
@@ -53,5 +67,45 @@ public class NewStartActivity extends Activity {
         window.getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
+    }
+
+    private void checkForAppUpdate() {
+        if (appUpdateManager == null) {
+            return;
+        }
+
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                startAppUpdate(appUpdateInfo);
+            }
+        });
+    }
+
+    private void resumeAppUpdateIfNeeded() {
+        if (appUpdateManager == null) {
+            return;
+        }
+
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability()
+                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                startAppUpdate(appUpdateInfo);
+            }
+        });
+    }
+
+    private void startAppUpdate(AppUpdateInfo appUpdateInfo) {
+        try {
+            appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    UPDATE_REQUEST_CODE
+            );
+        } catch (Exception ignored) {
+            // Google Play handles update availability; the app can continue normally if it cannot start.
+        }
     }
 }
