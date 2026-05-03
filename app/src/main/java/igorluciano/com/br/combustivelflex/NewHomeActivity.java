@@ -1,10 +1,13 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 
 public class NewHomeActivity extends Activity {
@@ -16,6 +19,7 @@ public class NewHomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupTransparentStatusBar();
         setContentView(R.layout.activity_new_home);
 
         gasolinePriceInput = findViewById(R.id.new_gasoline_price_input);
@@ -36,6 +40,14 @@ public class NewHomeActivity extends Activity {
         gasolineConsumptionInput.setText("");
         ethanolConsumptionInput.setText("");
         gasolinePriceInput.requestFocus();
+    }
+
+    private void setupTransparentStatusBar() {
+        Window window = getWindow();
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
     }
 
     private void setupPriceInput(EditText input) {
