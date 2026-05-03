@@ -25,8 +25,8 @@
     <string name="new_home_title_fuel">COMBUSTÍVEL</string>
     <string name="new_home_title_flex">FLEX</string>
     <string name="new_home_subtitle">Qual o melhor combustível para o seu carro?</string>
-    <string name="new_gasoline_price_label">Preco da gasolina</string>
-    <string name="new_ethanol_price_label">Preco do etanol</string>
+    <string name="new_gasoline_price_label">Preço da gasolina</string>
+    <string name="new_ethanol_price_label">Preço do etanol</string>
     <string name="new_price_hint">R$ 0,00</string>
     <string name="new_gasoline_initial">G</string>
     <string name="new_ethanol_initial">E</string>
@@ -34,8 +34,8 @@
     <string name="new_consumption_hint">0,0</string>
     <string name="new_gasoline_consumption_caption">km/L\nna gasolina</string>
     <string name="new_ethanol_consumption_caption">km/L\nno etanol</string>
-    <string name="new_tab_home">Inicio</string>
-    <string name="new_tab_history">Historico</string>
+    <string name="new_tab_home">Início</string>
+    <string name="new_tab_history">Histórico</string>
     <string name="new_tab_stations">Postos</string>
     <string name="new_tab_more">Mais</string>
     <string name="new_result_title">O melhor combustível\npara o seu carro é:</string>
@@ -46,4 +46,6 @@
     <string name="new_history_savings_label">Economia:</string>
     <string name="new_history_prices_format">Gasolina %1$s • Etanol %2$s</string>
     <string name="new_history_consumption_format">Consumo: %1$.2f km/L gasolina • %2$.2f km/L etanol</string>
+    <string name="savings_per_liter_format">%1$s por litro</string>
+    <string name="cost_per_km_format">%1$s/km</string>
 </resources>

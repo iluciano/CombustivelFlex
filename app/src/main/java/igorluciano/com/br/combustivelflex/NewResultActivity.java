@@ -154,11 +154,11 @@ public class NewResultActivity extends Activity {
     }
 
     private String formatSavings(double savings) {
-        return formatCurrency(savings) + " por litro";
+        return getString(R.string.savings_per_liter_format, formatCurrency(savings));
     }
 
     private String formatCostPerKm(double value) {
-        return formatCurrency(value) + "/km";
+        return getString(R.string.cost_per_km_format, formatCurrency(value));
     }
 
     private String formatCurrency(double value) {
