@@ -44,13 +44,26 @@ public class NewResultActivity extends Activity {
         int result = hasConsumption
                 ? calculateByConsumption(gasoline, ethanol, gasolineConsumption, ethanolConsumption)
                 : calculateByDefaultRule(gasoline, ethanol);
+        double savings = calculateSavings(
+                gasoline,
+                ethanol,
+                gasolineConsumption,
+                ethanolConsumption
+        );
         resultText.setText(result);
         resultText.setTextColor(getColor(
                 result == R.string.result_ethanol ? R.color.new_green : R.color.new_orange
         ));
-        savingsText.setText(formatSavings(
-                calculateSavings(gasoline, ethanol, gasolineConsumption, ethanolConsumption)
-        ));
+        savingsText.setText(formatSavings(savings));
+        saveCalculation(
+                gasoline,
+                ethanol,
+                gasolineConsumption,
+                ethanolConsumption,
+                getString(result),
+                savings,
+                hasConsumption
+        );
 
         if (hasConsumption) {
             gasolineCostText.setText(formatCostPerKm(gasoline / gasolineConsumption));
@@ -114,6 +127,27 @@ public class NewResultActivity extends Activity {
         }
 
         return Math.abs((gasoline * 0.7) - ethanol);
+    }
+
+    private void saveCalculation(
+            double gasoline,
+            double ethanol,
+            double gasolineConsumption,
+            double ethanolConsumption,
+            String result,
+            double savings,
+            boolean usedConsumption
+    ) {
+        CalculationHistoryStore.save(this, new CalculationHistoryItem(
+                System.currentTimeMillis(),
+                gasoline,
+                ethanol,
+                gasolineConsumption,
+                ethanolConsumption,
+                result,
+                savings,
+                usedConsumption
+        ));
     }
 
     private String formatSavings(double savings) {
