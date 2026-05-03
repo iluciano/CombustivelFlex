@@ -94,7 +94,7 @@ public class ResultActivity extends Activity {
 
     private String formatSavings(double savings) {
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-        return currencyFormat.format(savings) + " por litro";
+        return getString(R.string.savings_per_liter_format, currencyFormat.format(savings));
     }
 
     @Override

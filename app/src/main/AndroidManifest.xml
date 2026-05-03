@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,28 @@
             android:name=".ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".NewHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewStationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewTipsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewMoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewStartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +48,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
