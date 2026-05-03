@@ -97,6 +97,10 @@
     <string name="new_settings_share">Compartilhar com amigos</string>
     <string name="new_settings_share_title">Compartilhar app</string>
     <string name="new_settings_share_message">Seu amigo quer que você também economize na hora de abastecer.\n\n%1$s</string>
+    <string name="new_settings_share_manual_title">Compartilhar texto</string>
+    <string name="new_settings_share_manual_message">Não encontramos um app para compartilhar neste aparelho. Copie o texto abaixo e envie manualmente.</string>
+    <string name="new_settings_copy_text">Copiar texto</string>
+    <string name="new_settings_share_copied">Texto copiado.</string>
     <string name="new_settings_about">Sobre o Combustível Flex</string>
     <string name="new_settings_version_format">Versão %1$s</string>
     <string name="new_home_update_defaults_title">Atualizar consumo padrão?</string>

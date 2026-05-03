@@ -3,9 +3,13 @@ package igorluciano.com.br.combustivelflex;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +24,7 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.List;
 import java.util.Locale;
 
 public class NewSettingsActivity extends Activity {
@@ -220,11 +225,68 @@ public class NewSettingsActivity extends Activity {
     }
 
     private void shareApp() {
+        String shareText = getString(R.string.new_settings_share_message, PLAY_STORE_URL);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TITLE, getString(R.string.app_name));
-        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.new_settings_share_message, PLAY_STORE_URL));
-        startActivity(Intent.createChooser(intent, getString(R.string.new_settings_share_title)));
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, shareText);
+
+        if (!hasShareTarget(intent)) {
+            showCopyShareTextDialog(shareText);
+            return;
+        }
+
+        try {
+            startActivity(Intent.createChooser(intent, getString(R.string.new_settings_share_title)));
+        } catch (ActivityNotFoundException exception) {
+            showCopyShareTextDialog(shareText);
+        }
+    }
+
+    private boolean hasShareTarget(Intent intent) {
+        List<ResolveInfo> activities;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            activities = getPackageManager().queryIntentActivities(
+                    intent,
+                    PackageManager.ResolveInfoFlags.of(0)
+            );
+        } else {
+            activities = getPackageManager().queryIntentActivities(intent, 0);
+        }
+
+        return !activities.isEmpty();
+    }
+
+    private void showCopyShareTextDialog(String shareText) {
+        TextView textView = new TextView(this);
+        int padding = dp(18);
+        textView.setPadding(padding, padding, padding, 0);
+        textView.setText(shareText);
+        textView.setTextColor(getColor(R.color.new_text_primary));
+        textView.setTextSize(15);
+        textView.setTextIsSelectable(true);
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.new_settings_share_manual_title)
+                .setMessage(R.string.new_settings_share_manual_message)
+                .setView(textView)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.new_settings_copy_text, (dialog, which) -> {
+                    ClipboardManager clipboard =
+                            (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    clipboard.setPrimaryClip(ClipData.newPlainText(
+                            getString(R.string.app_name),
+                            shareText
+                    ));
+                    Toast.makeText(this, R.string.new_settings_share_copied, Toast.LENGTH_SHORT)
+                            .show();
+                })
+                .show();
+    }
+
+    private int dp(int value) {
+        return (int) (value * getResources().getDisplayMetrics().density);
     }
 
     private String formatConsumption(double value) {
