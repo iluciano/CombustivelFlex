@@ -27,7 +27,10 @@ public class NewStartActivity extends Activity {
                 view -> startActivity(new Intent(this, NewHistoryActivity.class))
         );
         findViewById(R.id.new_start_stations_card).setOnClickListener(
-                view -> showComingSoon()
+                view -> startActivity(new Intent(this, NewStationsActivity.class))
+        );
+        findViewById(R.id.new_start_stations_tab).setOnClickListener(
+                view -> startActivity(new Intent(this, NewStationsActivity.class))
         );
         findViewById(R.id.new_start_tips_card).setOnClickListener(
                 view -> showComingSoon()

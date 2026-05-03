@@ -60,4 +60,15 @@
     <string name="new_start_open_option">Abrir opção</string>
     <string name="new_badge_new">Novo</string>
     <string name="new_feature_coming_soon">Funcionalidade em breve.</string>
+    <string name="new_stations_back">Voltar</string>
+    <string name="new_stations_hero_description">Ilustração de posto de combustível próximo</string>
+    <string name="new_stations_badge">EM BREVE</string>
+    <string name="new_stations_headline">Novidade chegando!</string>
+    <string name="new_stations_description">Em breve você poderá encontrar os melhores postos perto de você e economizar ainda mais no abastecimento.</string>
+    <string name="new_stations_nearby_title">Postos perto de você</string>
+    <string name="new_stations_nearby_subtitle">Localize os postos mais próximos com facilidade.</string>
+    <string name="new_stations_best_price_title">Melhor preço</string>
+    <string name="new_stations_best_price_subtitle">Compare preços e escolha sempre a melhor opção.</string>
+    <string name="new_stations_routes_title">Rotas rápidas</string>
+    <string name="new_stations_routes_subtitle">Veja o caminho mais rápido até o posto escolhido.</string>
 </resources>
