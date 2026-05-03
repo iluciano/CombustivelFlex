@@ -21,6 +21,9 @@ public class NewStationsActivity extends Activity {
         findViewById(R.id.new_stations_history_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewHistoryActivity.class))
         );
+        findViewById(R.id.new_stations_more_tab).setOnClickListener(
+                view -> startActivity(new Intent(this, NewMoreActivity.class))
+        );
     }
 
     private void setupTransparentStatusBar() {

@@ -33,6 +33,9 @@
             android:name=".NewTipsActivity"
             android:exported="false" />
         <activity
+            android:name=".NewMoreActivity"
+            android:exported="false" />
+        <activity
             android:name=".NewStartActivity"
             android:exported="false" />
         <activity

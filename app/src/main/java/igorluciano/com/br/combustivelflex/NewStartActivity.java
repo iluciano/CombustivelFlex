@@ -38,6 +38,9 @@ public class NewStartActivity extends Activity {
         findViewById(R.id.new_start_settings_card).setOnClickListener(
                 view -> showComingSoon()
         );
+        findViewById(R.id.new_start_more_tab).setOnClickListener(
+                view -> startActivity(new Intent(this, NewMoreActivity.class))
+        );
     }
 
     private void showComingSoon() {

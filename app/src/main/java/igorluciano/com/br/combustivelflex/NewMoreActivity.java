@@ -6,25 +6,30 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
-public class NewTipsActivity extends Activity {
+public class NewMoreActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupTransparentStatusBar();
-        setContentView(R.layout.activity_new_tips);
+        setContentView(R.layout.activity_new_more);
 
-        findViewById(R.id.new_tips_home_tab).setOnClickListener(
+        findViewById(R.id.new_more_tips_card).setOnClickListener(
+                view -> startActivity(new Intent(this, NewTipsActivity.class))
+        );
+        findViewById(R.id.new_more_settings_card).setOnClickListener(
+                view -> Toast.makeText(this, R.string.new_feature_coming_soon, Toast.LENGTH_SHORT)
+                        .show()
+        );
+        findViewById(R.id.new_more_home_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewStartActivity.class))
         );
-        findViewById(R.id.new_tips_history_tab).setOnClickListener(
+        findViewById(R.id.new_more_history_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewHistoryActivity.class))
         );
-        findViewById(R.id.new_tips_stations_tab).setOnClickListener(
+        findViewById(R.id.new_more_stations_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewStationsActivity.class))
-        );
-        findViewById(R.id.new_tips_more_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewMoreActivity.class))
         );
     }
 

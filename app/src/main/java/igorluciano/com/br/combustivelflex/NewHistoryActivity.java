@@ -36,6 +36,9 @@ public class NewHistoryActivity extends Activity {
         findViewById(R.id.new_history_stations_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewStationsActivity.class))
         );
+        findViewById(R.id.new_history_more_tab).setOnClickListener(
+                view -> startActivity(new Intent(this, NewMoreActivity.class))
+        );
 
         renderHistory(CalculationHistoryStore.list(this));
     }
