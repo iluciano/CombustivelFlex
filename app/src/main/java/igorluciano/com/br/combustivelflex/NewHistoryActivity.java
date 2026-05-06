@@ -2,10 +2,8 @@ package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,8 +22,9 @@ public class NewHistoryActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupTransparentStatusBar();
+        EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_new_history);
+        EdgeToEdgeHelper.applySystemBarInsets(this);
 
         findViewById(R.id.new_history_home_tab).setOnClickListener(view -> {
             Intent intent = new Intent(this, NewStartActivity.class);
@@ -123,14 +122,6 @@ public class NewHistoryActivity extends Activity {
                 R.string.new_history_consumption_format,
                 item.gasolineConsumption,
                 item.ethanolConsumption
-        );
-    }
-
-    private void setupTransparentStatusBar() {
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
     }
 
