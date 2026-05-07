@@ -15,23 +15,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends Activity {
     private static final long AUTO_CALCULATION_DELAY_MS = 900;
-    private static final int UPDATE_REQUEST_CODE = 1001;
     public static final String EXTRA_CLEAR_INPUTS = "clearInputs";
 
     private EditText gasolineInput;
     private EditText ethanolInput;
     private EditText gasolineConsumptionInput;
     private EditText ethanolConsumptionInput;
-    private AppUpdateManager appUpdateManager;
+    private InAppUpdateHelper inAppUpdateHelper;
     private AdView bottomButtonsAd;
     private final Handler autoCalculationHandler = new Handler(Looper.getMainLooper());
     private final Runnable autoCalculationRunnable = () -> startResultIfReady(false);
@@ -52,8 +45,8 @@ public class MainActivity extends Activity {
         setupPriceInput(gasolineConsumptionInput);
         setupPriceInput(ethanolConsumptionInput);
         setupAutoCalculation();
-        appUpdateManager = AppUpdateManagerFactory.create(this);
-        checkForAppUpdate();
+        inAppUpdateHelper = new InAppUpdateHelper(this);
+        inAppUpdateHelper.checkForUpdate();
 
         findViewById(R.id.clear_button).setOnClickListener(view -> {
             autoCalculationHandler.removeCallbacks(autoCalculationRunnable);
@@ -202,7 +195,9 @@ public class MainActivity extends Activity {
         super.onResume();
         resultStarted = false;
         clearInputsIfRequested(getIntent());
-        resumeAppUpdateIfNeeded();
+        if (inAppUpdateHelper != null) {
+            inAppUpdateHelper.resumeUpdateIfNeeded();
+        }
     }
 
     @Override
@@ -210,6 +205,9 @@ public class MainActivity extends Activity {
         autoCalculationHandler.removeCallbacks(autoCalculationRunnable);
         if (bottomButtonsAd != null) {
             bottomButtonsAd.destroy();
+        }
+        if (inAppUpdateHelper != null) {
+            inAppUpdateHelper.destroy();
         }
         super.onDestroy();
     }
@@ -230,43 +228,11 @@ public class MainActivity extends Activity {
         intent.removeExtra(EXTRA_CLEAR_INPUTS);
     }
 
-    private void checkForAppUpdate() {
-        if (appUpdateManager == null) {
-            return;
-        }
-
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                startAppUpdate(appUpdateInfo);
-            }
-        });
-    }
-
-    private void resumeAppUpdateIfNeeded() {
-        if (appUpdateManager == null) {
-            return;
-        }
-
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability()
-                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                startAppUpdate(appUpdateInfo);
-            }
-        });
-    }
-
-    private void startAppUpdate(AppUpdateInfo appUpdateInfo) {
-        try {
-            appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    this,
-                    UPDATE_REQUEST_CODE
-            );
-        } catch (Exception ignored) {
-            // Google Play handles update availability; the app can continue normally if it cannot start.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (inAppUpdateHelper != null) {
+            inAppUpdateHelper.handleActivityResult(requestCode, resultCode);
         }
     }
 

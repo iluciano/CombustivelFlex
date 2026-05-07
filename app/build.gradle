@@ -14,8 +14,8 @@ android {
         applicationId "igorluciano.com.br.combustivelflex"
         minSdk 23
         targetSdk 35
-        versionCode 24
-        versionName "12.2.0"
+        versionCode 25
+        versionName "12.2.1"
     }
 
     signingConfigs {

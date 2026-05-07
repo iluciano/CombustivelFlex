@@ -111,4 +111,11 @@
     <string name="new_home_update_defaults_message">Os consumos informados são diferentes dos valores salvos em Configurações. Deseja substituir os valores salvos?</string>
     <string name="new_home_update_defaults_yes">Substituir</string>
     <string name="new_home_update_defaults_no">Agora não</string>
+    <string name="app_update_ready_title">Atualiza&#231;&#227;o pronta</string>
+    <string name="app_update_ready_message">A nova vers&#227;o j&#225; foi baixada. Reinicie o app para concluir a atualiza&#231;&#227;o.</string>
+    <string name="app_update_restart_now">Reiniciar agora</string>
+    <string name="app_update_later">Depois</string>
+    <string name="app_update_fallback_title">Atualiza&#231;&#227;o dispon&#237;vel</string>
+    <string name="app_update_fallback_message">N&#227;o foi poss&#237;vel iniciar a atualiza&#231;&#227;o automaticamente. Voc&#234; pode atualizar o Combust&#237;vel Flex pela Play Store.</string>
+    <string name="app_update_open_play_store">Abrir Play Store</string>
 </resources>

@@ -4,17 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.UpdateAvailability;
-
 public class NewStartActivity extends Activity {
-    private static final int UPDATE_REQUEST_CODE = 1001;
-
-    private AppUpdateManager appUpdateManager;
+    private InAppUpdateHelper inAppUpdateHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +13,8 @@ public class NewStartActivity extends Activity {
         EdgeToEdgeHelper.enable(this);
         setContentView(R.layout.activity_new_start);
         EdgeToEdgeHelper.applySystemBarInsets(this);
-        appUpdateManager = AppUpdateManagerFactory.create(this);
-        checkForAppUpdate();
+        inAppUpdateHelper = new InAppUpdateHelper(this);
+        inAppUpdateHelper.checkForUpdate();
 
         findViewById(R.id.new_start_calculate_card).setOnClickListener(view -> {
             Intent intent = new Intent(this, NewHomeActivity.class);
@@ -56,46 +47,24 @@ public class NewStartActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        resumeAppUpdateIfNeeded();
+        if (inAppUpdateHelper != null) {
+            inAppUpdateHelper.resumeUpdateIfNeeded();
+        }
     }
 
-    private void checkForAppUpdate() {
-        if (appUpdateManager == null) {
-            return;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (inAppUpdateHelper != null) {
+            inAppUpdateHelper.handleActivityResult(requestCode, resultCode);
         }
-
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                startAppUpdate(appUpdateInfo);
-            }
-        });
     }
 
-    private void resumeAppUpdateIfNeeded() {
-        if (appUpdateManager == null) {
-            return;
+    @Override
+    protected void onDestroy() {
+        if (inAppUpdateHelper != null) {
+            inAppUpdateHelper.destroy();
         }
-
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability()
-                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                startAppUpdate(appUpdateInfo);
-            }
-        });
-    }
-
-    private void startAppUpdate(AppUpdateInfo appUpdateInfo) {
-        try {
-            appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    this,
-                    UPDATE_REQUEST_CODE
-            );
-        } catch (Exception ignored) {
-            // Google Play handles update availability; the app can continue normally if it cannot start.
-        }
+        super.onDestroy();
     }
 }
