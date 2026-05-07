@@ -56,6 +56,14 @@ final class CalculationHistoryStore {
         return historyItems;
     }
 
+    static void clear(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(
+                PREFERENCES_NAME,
+                Context.MODE_PRIVATE
+        );
+        preferences.edit().remove(KEY_ITEMS).apply();
+    }
+
     private static JSONArray parseItems(String value) {
         try {
             return new JSONArray(value);

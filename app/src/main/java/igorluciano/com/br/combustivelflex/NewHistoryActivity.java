@@ -1,6 +1,7 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +39,9 @@ public class NewHistoryActivity extends Activity {
         findViewById(R.id.new_history_more_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewMoreActivity.class))
         );
+        findViewById(R.id.new_history_clear_button).setOnClickListener(
+                view -> confirmClearHistory()
+        );
 
         renderHistory(CalculationHistoryStore.list(this));
     }
@@ -45,17 +49,32 @@ public class NewHistoryActivity extends Activity {
     private void renderHistory(List<CalculationHistoryItem> items) {
         LinearLayout container = findViewById(R.id.new_history_container);
         TextView emptyText = findViewById(R.id.new_history_empty_text);
+        View clearButton = findViewById(R.id.new_history_clear_button);
         container.removeAllViews();
 
         if (items.isEmpty()) {
             emptyText.setVisibility(View.VISIBLE);
+            clearButton.setVisibility(View.GONE);
             return;
         }
 
         emptyText.setVisibility(View.GONE);
+        clearButton.setVisibility(View.VISIBLE);
         for (CalculationHistoryItem item : items) {
             container.addView(createHistoryCard(item));
         }
+    }
+
+    private void confirmClearHistory() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.new_history_clear_title)
+                .setMessage(R.string.new_history_clear_message)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.new_history_clear_confirm, (dialog, which) -> {
+                    CalculationHistoryStore.clear(this);
+                    renderHistory(CalculationHistoryStore.list(this));
+                })
+                .show();
     }
 
     private View createHistoryCard(CalculationHistoryItem item) {
