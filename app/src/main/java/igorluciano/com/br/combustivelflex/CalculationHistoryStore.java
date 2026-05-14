@@ -38,6 +38,13 @@ final class CalculationHistoryStore {
         preferences.edit().putString(KEY_ITEMS, updatedItems.toString()).apply();
     }
 
+    static void clear(Context context) {
+        context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .remove(KEY_ITEMS)
+                .apply();
+    }
+
     static List<CalculationHistoryItem> list(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(
                 PREFERENCES_NAME,

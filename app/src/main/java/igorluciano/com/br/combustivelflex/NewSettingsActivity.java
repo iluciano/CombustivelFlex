@@ -10,21 +10,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.view.WindowCompat;
+
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -47,14 +46,15 @@ public class NewSettingsActivity extends Activity {
     private TextView kmUnitButton;
     private TextView gasolineConsumptionText;
     private TextView ethanolConsumptionText;
-    private Switch notificationsSwitch;
-    private Switch priceReminderSwitch;
+    private SwitchCompat notificationsSwitch;
+    private SwitchCompat priceReminderSwitch;
     private AdView bottomAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupTransparentStatusBar();
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
         setContentView(R.layout.activity_new_settings);
 
         literUnitButton = findViewById(R.id.new_settings_unit_liter);
@@ -80,23 +80,30 @@ public class NewSettingsActivity extends Activity {
         );
         findViewById(R.id.new_settings_rate_row).setOnClickListener(view -> openStoreReview());
         findViewById(R.id.new_settings_share_row).setOnClickListener(view -> shareApp());
-        findViewById(R.id.new_settings_about_row).setOnClickListener(
-                view -> Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show()
-        );
-        findViewById(R.id.new_settings_home_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStartActivity.class))
-        );
-        findViewById(R.id.new_settings_history_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewHistoryActivity.class))
-        );
-        findViewById(R.id.new_settings_stations_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStationsActivity.class))
-        );
-        findViewById(R.id.new_settings_more_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewMoreActivity.class))
-        );
+        findViewById(R.id.new_settings_about_row).setOnClickListener(view ->
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://igorluciano.com.br/combustivelflex/"))));
+        findViewById(R.id.new_settings_home_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_settings_history_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewHistoryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_settings_stations_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStationsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_settings_more_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewMoreActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
 
-        new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
         FrameLayout adContainer = findViewById(R.id.new_settings_ad_container);
         bottomAd = AdMobBanner.loadSettingsBanner(this, adContainer);
 
@@ -320,13 +327,5 @@ public class NewSettingsActivity extends Activity {
         } catch (PackageManager.NameNotFoundException exception) {
             return "";
         }
-    }
-
-    private void setupTransparentStatusBar() {
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
     }
 }

@@ -14,170 +14,182 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingTop="58dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="14dp">
-
-            <FrameLayout
-                android:layout_width="74dp"
-                android:layout_height="74dp"
-                android:background="@drawable/new_result_icon_circle">
-
-                <ImageView
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/gas_station_description"
-                    android:src="@drawable/ic_local_gas_station_black_48dp" />
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:gravity="center"
-                android:text="@string/new_result_title"
-                android:textColor="@color/new_text_primary"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/new_result_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:textColor="@color/new_green"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="118dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="12dp"
-                android:contentDescription="@string/result_car_description"
-                android:scaleType="fitCenter"
-                android:src="@drawable/car" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:gravity="center"
-                android:text="@string/savings_title"
-                android:textColor="@color/new_text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/new_savings_value_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:textColor="@color/new_green"
-                android:textSize="19sp"
-                android:textStyle="bold" />
+            android:paddingBottom="18dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/new_comparison_panel"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/new_card_background"
+                android:elevation="5dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="14dp">
+                android:paddingStart="16dp"
+                android:paddingTop="22dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="18dp">
+
+                <FrameLayout
+                    android:layout_width="74dp"
+                    android:layout_height="74dp"
+                    android:background="@drawable/new_result_icon_circle">
+
+                    <ImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:src="@mipmap/ic_launcher" />
+                </FrameLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/new_comparison_title"
-                    android:textColor="@color/new_text_secondary"
-                    android:textSize="13sp" />
+                    android:layout_marginTop="22dp"
+                    android:gravity="center"
+                    android:text="@string/new_result_title"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/new_result_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:textColor="@color/new_green"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="118dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:contentDescription="@string/result_car_description"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/car" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:gravity="center"
+                    android:text="@string/savings_title"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/new_savings_value_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:textColor="@color/new_green"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/new_comparison_panel"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_comparison_title"
+                        android:textColor="@color/new_text_secondary"
+                        android:textSize="13sp" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="76dp"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/new_result_cost_card"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/result_gasoline"
-                            android:textColor="@color/new_text_primary"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="76dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/new_result_cost_card"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
-                        <TextView
-                            android:id="@+id/new_gasoline_cost_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="@color/new_text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/result_gasoline"
+                                android:textColor="@color/new_text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="76dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/new_result_winner_card"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
+                            <TextView
+                                android:id="@+id/new_gasoline_cost_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textColor="@color/new_text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/result_ethanol"
-                            android:textColor="@color/new_green"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="76dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/new_result_winner_card"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
-                        <TextView
-                            android:id="@+id/new_ethanol_cost_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="@color/new_green"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/result_ethanol"
+                                android:textColor="@color/new_green"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/new_ethanol_cost_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textColor="@color/new_green"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/new_recalculate_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/new_primary_button"
+                    android:text="@string/btn_recalculate"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:id="@+id/new_result_ad_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:minHeight="50dp" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/new_recalculate_button"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="18dp"
-                android:background="@drawable/new_primary_button"
-                android:text="@string/btn_recalculate"
-                android:textColor="@android:color/white"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <FrameLayout
-                android:id="@+id/new_result_ad_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:minHeight="50dp" />
         </LinearLayout>
     </ScrollView>
 

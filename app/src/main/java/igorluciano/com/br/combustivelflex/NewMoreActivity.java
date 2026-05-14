@@ -2,14 +2,12 @@ package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 
+import androidx.core.view.WindowCompat;
+
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 public class NewMoreActivity extends Activity {
     private AdView bottomAd;
@@ -17,7 +15,8 @@ public class NewMoreActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupTransparentStatusBar();
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
         setContentView(R.layout.activity_new_more);
 
         findViewById(R.id.new_more_tips_card).setOnClickListener(
@@ -26,17 +25,22 @@ public class NewMoreActivity extends Activity {
         findViewById(R.id.new_more_settings_card).setOnClickListener(
                 view -> startActivity(new Intent(this, NewSettingsActivity.class))
         );
-        findViewById(R.id.new_more_home_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStartActivity.class))
-        );
-        findViewById(R.id.new_more_history_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewHistoryActivity.class))
-        );
-        findViewById(R.id.new_more_stations_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStationsActivity.class))
-        );
+        findViewById(R.id.new_more_home_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_more_history_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewHistoryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_more_stations_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStationsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
 
-        new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
         FrameLayout adContainer = findViewById(R.id.new_more_ad_container);
         bottomAd = AdMobBanner.loadMoreBanner(this, adContainer);
     }
@@ -47,13 +51,5 @@ public class NewMoreActivity extends Activity {
             bottomAd.destroy();
         }
         super.onDestroy();
-    }
-
-    private void setupTransparentStatusBar() {
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
     }
 }

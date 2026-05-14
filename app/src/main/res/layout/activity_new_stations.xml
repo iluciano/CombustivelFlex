@@ -2,228 +2,134 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/new_surface"
+    android:background="@color/new_background"
     android:orientation="vertical">
 
-    <ScrollView
+    <!-- Card que envolve cabeçalho + lista -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/new_card_background"
+        android:elevation="5dp"
+        android:orientation="vertical">
 
+        <!-- Cabeçalho dentro do card -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/new_stations_bottom_wave"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="18dp"
-            android:paddingTop="44dp"
-            android:paddingEnd="18dp"
-            android:paddingBottom="34dp">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
-
-                <ImageButton
-                    android:id="@+id/new_stations_back_button"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/new_stations_back"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_nav_back"
-                    android:tint="@color/new_text_primary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/new_start_stations_title"
-                    android:textColor="@color/new_text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </FrameLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/new_stations_hero_description"
-                android:scaleType="fitCenter"
-                android:src="@drawable/new_stations_hero" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="18dp"
-                android:background="@drawable/new_stations_badge_background"
-                android:paddingStart="12dp"
-                android:paddingTop="6dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="6dp"
-                android:text="@string/new_stations_badge"
-                android:textColor="@color/new_blue"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+            android:paddingStart="16dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:gravity="center"
-                android:text="@string/new_stations_headline"
+                android:text="@string/new_start_stations_title"
                 android:textColor="@color/new_text_primary"
-                android:textSize="26sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginEnd="22dp"
-                android:gravity="center"
-                android:lineSpacingExtra="2dp"
-                android:text="@string/new_stations_description"
-                android:textColor="@color/new_text_secondary"
-                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginEnd="12dp"
-                android:background="@drawable/new_start_option_card"
-                android:elevation="3dp"
-                android:orientation="vertical"
-                android:paddingStart="18dp"
-                android:paddingTop="18dp"
-                android:paddingEnd="18dp"
-                android:paddingBottom="18dp">
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_feature_location"
+                    android:tint="@color/new_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:contentDescription="@string/new_stations_nearby_title"
-                        android:src="@drawable/ic_feature_location"
-                        android:tint="@color/new_blue" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/new_stations_nearby_title"
-                            android:textColor="@color/new_text_primary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/new_stations_nearby_subtitle"
-                            android:textColor="@color/new_text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:contentDescription="@string/new_stations_best_price_title"
-                        android:src="@drawable/ic_feature_tag"
-                        android:tint="@color/new_green" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/new_stations_best_price_title"
-                            android:textColor="@color/new_text_primary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/new_stations_best_price_subtitle"
-                            android:textColor="@color/new_text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:contentDescription="@string/new_stations_routes_title"
-                        android:src="@drawable/ic_feature_route"
-                        android:tint="@color/new_orange" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/new_stations_routes_title"
-                            android:textColor="@color/new_text_primary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/new_stations_routes_subtitle"
-                            android:textColor="@color/new_text_secondary"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_marginStart="6dp"
+                    android:text="@string/stations_current_location"
+                    android:textColor="@color/new_blue"
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/new_divider" />
+
+        <!-- Área de conteúdo: lista / loading / status -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stations_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:scrollbarStyle="outsideOverlay"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/stations_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <ProgressBar
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/stations_loading"
+                    android:textColor="@color/new_text_muted"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/stations_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:textColor="@color/new_text_muted"
+                android:textSize="15sp"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Botão VER NO MAPA -->
+    <TextView
+        android:id="@+id/stations_map_button"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/new_primary_button"
+        android:gravity="center"
+        android:text="@string/stations_see_map"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- Bottom navigation -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"

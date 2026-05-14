@@ -1,13 +1,14 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.view.WindowCompat;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,8 @@ public class NewHistoryActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupTransparentStatusBar();
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
         setContentView(R.layout.activity_new_history);
 
         findViewById(R.id.new_history_home_tab).setOnClickListener(view -> {
@@ -33,14 +35,33 @@ public class NewHistoryActivity extends Activity {
             startActivity(intent);
             finish();
         });
-        findViewById(R.id.new_history_stations_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStationsActivity.class))
-        );
-        findViewById(R.id.new_history_more_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewMoreActivity.class))
+        findViewById(R.id.new_history_stations_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStationsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_history_more_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewMoreActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_history_clear_button).setOnClickListener(view ->
+                showClearConfirmDialog()
         );
 
         renderHistory(CalculationHistoryStore.list(this));
+    }
+
+    private void showClearConfirmDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.new_history_clear_confirm_title)
+                .setMessage(R.string.new_history_clear_confirm_message)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.new_history_clear_confirm_yes, (dialog, which) -> {
+                    CalculationHistoryStore.clear(this);
+                    renderHistory(CalculationHistoryStore.list(this));
+                })
+                .show();
     }
 
     private void renderHistory(List<CalculationHistoryItem> items) {
@@ -98,8 +119,8 @@ public class NewHistoryActivity extends Activity {
         card.addView(summaryText);
 
         TextView savingsText = new TextView(this);
-        savingsText.setText(getString(R.string.new_history_savings_label)
-                + " " + currencyFormat.format(item.savings));
+        savingsText.setText(getString(R.string.new_history_savings_label,
+                currencyFormat.format(item.savings)));
         savingsText.setTextColor(getColor(R.color.new_text_secondary));
         savingsText.setTextSize(13);
         savingsText.setPadding(0, dp(4), 0, 0);
@@ -123,14 +144,6 @@ public class NewHistoryActivity extends Activity {
                 R.string.new_history_consumption_format,
                 item.gasolineConsumption,
                 item.ethanolConsumption
-        );
-    }
-
-    private void setupTransparentStatusBar() {
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
     }
 

@@ -5,14 +5,14 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+// Entrada da direita para esquerda: digitar "599" exibe "5.99", não "5.99".
+// Cada dígito novo entra pela direita e desloca os demais para a esquerda.
 public final class MaskedDecimalTextWatcher implements TextWatcher {
     private static final int MAX_DIGITS = 4;
-    private static final int MAX_INTEGER_DIGITS = 2;
-    private static final int MIN_DECIMAL_DIGITS = 2;
+    private static final int DECIMAL_PLACES = 2;
 
     private final EditText input;
     private boolean updating;
-    private boolean deletingDecimalPoint;
 
     public MaskedDecimalTextWatcher(EditText input) {
         this.input = input;
@@ -20,10 +20,6 @@ public final class MaskedDecimalTextWatcher implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence text, int start, int count, int after) {
-        deletingDecimalPoint = count == 1
-                && after == 0
-                && start < text.length()
-                && text.charAt(start) == '.';
     }
 
     @Override
@@ -33,11 +29,6 @@ public final class MaskedDecimalTextWatcher implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         if (updating) {
-            return;
-        }
-
-        if (deletingDecimalPoint) {
-            deletingDecimalPoint = false;
             return;
         }
 
@@ -51,19 +42,7 @@ public final class MaskedDecimalTextWatcher implements TextWatcher {
     }
 
     public void padDecimals() {
-        if (updating) {
-            return;
-        }
-
-        String original = input.getText().toString();
-        if (TextUtils.isEmpty(original)) {
-            return;
-        }
-
-        String formatted = padDecimalPart(formatInput(original));
-        if (!original.equals(formatted)) {
-            updateText(formatted);
-        }
+        // Com a nova máscara sempre há 2 casas decimais — método mantido por compatibilidade.
     }
 
     private void updateText(String value) {
@@ -75,43 +54,47 @@ public final class MaskedDecimalTextWatcher implements TextWatcher {
 
     private String formatInput(String value) {
         String digits = collectDigits(value);
-        if (digits.isEmpty()) {
+
+        if (digits.isEmpty() || isAllZeros(digits)) {
             return "";
         }
 
-        int integerDigits = digits.length() < MAX_DIGITS
-                ? 1
-                : MAX_INTEGER_DIGITS;
-        String integerPart = digits.substring(0, integerDigits);
-        String decimalPart = digits.substring(integerDigits);
+        // Garante mínimo de DECIMAL_PLACES + 1 dígitos com zeros à esquerda
+        while (digits.length() < DECIMAL_PLACES + 1) {
+            digits = "0" + digits;
+        }
+
+        String integerPart = digits.substring(0, digits.length() - DECIMAL_PLACES);
+        String decimalPart = digits.substring(digits.length() - DECIMAL_PLACES);
+
+        // Remove zeros desnecessários à esquerda da parte inteira
+        while (integerPart.length() > 1 && integerPart.charAt(0) == '0') {
+            integerPart = integerPart.substring(1);
+        }
+
         return integerPart + "." + decimalPart;
     }
 
-    private String padDecimalPart(String value) {
-        int pointIndex = value.indexOf('.');
-        if (pointIndex < 0) {
-            return value + ".00";
+    private boolean isAllZeros(String digits) {
+        for (int i = 0; i < digits.length(); i++) {
+            if (digits.charAt(i) != '0') {
+                return false;
+            }
         }
-
-        String integerPart = value.substring(0, pointIndex);
-        String decimalPart = value.substring(pointIndex + 1);
-        while (decimalPart.length() < MIN_DECIMAL_DIGITS) {
-            decimalPart += "0";
-        }
-
-        return integerPart + "." + decimalPart;
+        return true;
     }
 
     private String collectDigits(String value) {
         StringBuilder digits = new StringBuilder();
-
-        for (int index = 0; index < value.length(); index++) {
-            char character = value.charAt(index);
-            if (Character.isDigit(character) && digits.length() < MAX_DIGITS) {
-                digits.append(character);
+        for (int i = 0; i < value.length(); i++) {
+            if (Character.isDigit(value.charAt(i))) {
+                digits.append(value.charAt(i));
             }
         }
-
+        // Mantém apenas os últimos MAX_DIGITS dígitos (entrada da direita para esquerda)
+        if (digits.length() > MAX_DIGITS) {
+            digits.delete(0, digits.length() - MAX_DIGITS);
+        }
         return digits.toString();
     }
 }

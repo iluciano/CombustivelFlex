@@ -2,12 +2,11 @@ package igorluciano.com.br.combustivelflex;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.core.view.WindowCompat;
 
 import com.google.android.gms.ads.AdView;
 
@@ -15,12 +14,18 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class NewResultActivity extends Activity {
+    public static final String EXTRA_GASOLINE = "valGas";
+    public static final String EXTRA_ETHANOL = "valEta";
+    public static final String EXTRA_GASOLINE_CONSUMPTION = "gasolineConsumption";
+    public static final String EXTRA_ETHANOL_CONSUMPTION = "ethanolConsumption";
+
     private AdView bottomAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupTransparentStatusBar();
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
         setContentView(R.layout.activity_new_result);
 
         TextView resultText = findViewById(R.id.new_result_text);
@@ -28,12 +33,10 @@ public class NewResultActivity extends Activity {
         TextView gasolineCostText = findViewById(R.id.new_gasoline_cost_text);
         TextView ethanolCostText = findViewById(R.id.new_ethanol_cost_text);
 
-        double gasoline = getIntent().getDoubleExtra(ResultActivity.EXTRA_GASOLINE, 0);
-        double ethanol = getIntent().getDoubleExtra(ResultActivity.EXTRA_ETHANOL, 0);
-        double gasolineConsumption = getIntent()
-                .getDoubleExtra(ResultActivity.EXTRA_GASOLINE_CONSUMPTION, 0);
-        double ethanolConsumption = getIntent()
-                .getDoubleExtra(ResultActivity.EXTRA_ETHANOL_CONSUMPTION, 0);
+        double gasoline = getIntent().getDoubleExtra(EXTRA_GASOLINE, 0);
+        double ethanol = getIntent().getDoubleExtra(EXTRA_ETHANOL, 0);
+        double gasolineConsumption = getIntent().getDoubleExtra(EXTRA_GASOLINE_CONSUMPTION, 0);
+        double ethanolConsumption = getIntent().getDoubleExtra(EXTRA_ETHANOL_CONSUMPTION, 0);
 
         if (gasoline <= 0 || ethanol <= 0) {
             resultText.setText(R.string.invalid_result);
@@ -54,7 +57,7 @@ public class NewResultActivity extends Activity {
         resultText.setTextColor(getColor(
                 result == R.string.result_ethanol ? R.color.new_green : R.color.new_orange
         ));
-        savingsText.setText(formatSavings(savings));
+        savingsText.setText(formatSavings(savings, hasConsumption));
         saveCalculation(
                 gasoline,
                 ethanol,
@@ -80,18 +83,26 @@ public class NewResultActivity extends Activity {
             startActivity(intent);
             finish();
         });
-        findViewById(R.id.new_result_home_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStartActivity.class))
-        );
-        findViewById(R.id.new_result_history_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewHistoryActivity.class))
-        );
-        findViewById(R.id.new_result_stations_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStationsActivity.class))
-        );
-        findViewById(R.id.new_result_more_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewMoreActivity.class))
-        );
+        findViewById(R.id.new_result_home_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_result_history_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewHistoryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_result_stations_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStationsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_result_more_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewMoreActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
 
         FrameLayout adContainer = findViewById(R.id.new_result_ad_container);
         bottomAd = AdMobBanner.loadResultBanner(this, adContainer);
@@ -99,14 +110,6 @@ public class NewResultActivity extends Activity {
 
     private boolean hasConsumptionValues(double gasolineConsumption, double ethanolConsumption) {
         return gasolineConsumption > 0 && ethanolConsumption > 0;
-    }
-
-    private void setupTransparentStatusBar() {
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
     }
 
     private int calculateByConsumption(
@@ -162,8 +165,9 @@ public class NewResultActivity extends Activity {
         ));
     }
 
-    private String formatSavings(double savings) {
-        return getString(R.string.savings_per_liter_format, formatCurrency(savings));
+    private String formatSavings(double savings, boolean perKm) {
+        int format = perKm ? R.string.savings_per_km_format : R.string.savings_per_liter_format;
+        return getString(format, formatCurrency(savings));
     }
 
     private String formatCostPerKm(double value) {

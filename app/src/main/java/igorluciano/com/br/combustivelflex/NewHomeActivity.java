@@ -3,17 +3,15 @@ package igorluciano.com.br.combustivelflex;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.core.view.WindowCompat;
+
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 public class NewHomeActivity extends Activity {
     public static final String EXTRA_CLEAR_INPUTS = "newClearInputs";
@@ -27,34 +25,42 @@ public class NewHomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupTransparentStatusBar();
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
         setContentView(R.layout.activity_new_home);
 
         gasolinePriceInput = findViewById(R.id.new_gasoline_price_input);
         ethanolPriceInput = findViewById(R.id.new_ethanol_price_input);
         gasolineConsumptionInput = findViewById(R.id.new_gasoline_consumption_input);
         ethanolConsumptionInput = findViewById(R.id.new_ethanol_consumption_input);
-        setupPriceInput(gasolinePriceInput);
-        setupPriceInput(ethanolPriceInput);
-        setupPriceInput(gasolineConsumptionInput);
-        setupPriceInput(ethanolConsumptionInput);
+        setupInput(gasolinePriceInput);
+        setupInput(ethanolPriceInput);
+        setupInput(gasolineConsumptionInput);
+        setupInput(ethanolConsumptionInput);
 
         findViewById(R.id.new_calculate_button).setOnClickListener(view -> startResultIfReady());
         findViewById(R.id.new_clear_button).setOnClickListener(view -> clearInputs());
-        findViewById(R.id.new_home_home_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStartActivity.class))
-        );
-        findViewById(R.id.new_home_history_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewHistoryActivity.class))
-        );
-        findViewById(R.id.new_home_stations_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewStationsActivity.class))
-        );
-        findViewById(R.id.new_home_more_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewMoreActivity.class))
-        );
+        findViewById(R.id.new_home_home_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStartActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_home_history_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewHistoryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_home_stations_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStationsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_home_more_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewMoreActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
 
-        new Thread(() -> MobileAds.initialize(this, initializationStatus -> {})).start();
         FrameLayout adContainer = findViewById(R.id.new_home_ad_container);
         bottomAd = AdMobBanner.loadMainBanner(this, adContainer);
         clearInputsIfRequested(getIntent());
@@ -145,10 +151,10 @@ public class NewHomeActivity extends Activity {
             double ethanolConsumption
     ) {
         Intent intent = new Intent(this, NewResultActivity.class);
-        intent.putExtra(ResultActivity.EXTRA_GASOLINE, gasoline);
-        intent.putExtra(ResultActivity.EXTRA_ETHANOL, ethanol);
-        intent.putExtra(ResultActivity.EXTRA_GASOLINE_CONSUMPTION, gasolineConsumption);
-        intent.putExtra(ResultActivity.EXTRA_ETHANOL_CONSUMPTION, ethanolConsumption);
+        intent.putExtra(NewResultActivity.EXTRA_GASOLINE, gasoline);
+        intent.putExtra(NewResultActivity.EXTRA_ETHANOL, ethanol);
+        intent.putExtra(NewResultActivity.EXTRA_GASOLINE_CONSUMPTION, gasolineConsumption);
+        intent.putExtra(NewResultActivity.EXTRA_ETHANOL_CONSUMPTION, ethanolConsumption);
         startActivity(intent);
     }
 
@@ -252,15 +258,7 @@ public class NewHomeActivity extends Activity {
         super.onDestroy();
     }
 
-    private void setupTransparentStatusBar() {
-        Window window = getWindow();
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
-    }
-
-    private void setupPriceInput(EditText input) {
+    private void setupInput(EditText input) {
         MaskedDecimalTextWatcher watcher = new MaskedDecimalTextWatcher(input);
         input.addTextChangedListener(watcher);
         input.setOnFocusChangeListener((view, hasFocus) -> {
