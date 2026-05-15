@@ -1,7 +1,7 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.Manifest;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.WindowCompat;
+import androidx.activity.EdgeToEdge;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NewStationsActivity extends Activity {
+public class NewStationsActivity extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION = 42;
 
@@ -35,13 +35,13 @@ public class NewStationsActivity extends Activity {
     private PostoAdapter adapter;
     private View loadingView;
     private View recyclerView;
+    private View emptyView;
     private TextView statusText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_stations);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -59,8 +59,10 @@ public class NewStationsActivity extends Activity {
 
         loadingView = findViewById(R.id.stations_loading);
         recyclerView = rv;
+        emptyView = findViewById(R.id.stations_empty_view);
         statusText = findViewById(R.id.stations_status);
 
+        findViewById(R.id.stations_location_row).setOnClickListener(v -> loadStations());
         findViewById(R.id.stations_map_button).setOnClickListener(v -> openMap(null));
 
         findViewById(R.id.new_stations_home_tab).setOnClickListener(view -> {
@@ -147,7 +149,7 @@ public class NewStationsActivity extends Activity {
 
                         float[] result = new float[1];
                         Location.distanceBetween(userLat, userLon, lat, lon, result);
-                        if (result[0] > 10_000) continue;
+                        if (result[0] > 5_000) continue;
                         posto.setDistanciaMetros(result[0]);
 
                         postos.add(posto);
@@ -158,7 +160,7 @@ public class NewStationsActivity extends Activity {
 
                     runOnUiThread(() -> {
                         if (postos.isEmpty()) {
-                            showStatus(getString(R.string.stations_empty));
+                            showEmpty();
                         } else {
                             adapter.setPostos(postos);
                             // Update map button with real location
@@ -200,18 +202,28 @@ public class NewStationsActivity extends Activity {
     private void showLoading() {
         loadingView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
         statusText.setVisibility(View.GONE);
     }
 
     private void showList() {
         loadingView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+        statusText.setVisibility(View.GONE);
+    }
+
+    private void showEmpty() {
+        loadingView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
         statusText.setVisibility(View.GONE);
     }
 
     private void showStatus(String message) {
         loadingView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
         statusText.setText(message);
         statusText.setVisibility(View.VISIBLE);
     }

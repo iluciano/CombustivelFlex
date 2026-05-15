@@ -1,7 +1,7 @@
 package igorluciano.com.br.combustivelflex;
 
 import android.Manifest;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.view.WindowCompat;
+import androidx.activity.EdgeToEdge;
 
 import com.google.android.gms.ads.AdView;
 
@@ -30,7 +30,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 
-public class NewSettingsActivity extends Activity {
+public class NewSettingsActivity extends AppCompatActivity {
     private static final int REQUEST_NOTIFICATIONS = 10;
     private static final String PLAY_STORE_URL =
             "https://play.google.com/store/apps/details?id=igorluciano.com.br.combustivelflex&pli=1";
@@ -53,8 +53,7 @@ public class NewSettingsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_settings);
 
         literUnitButton = findViewById(R.id.new_settings_unit_liter);

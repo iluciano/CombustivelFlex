@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/new_background"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <!-- Barra de voltar fora do card e do scroll -->
@@ -314,6 +315,22 @@
                             android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <View
+                    android:id="@+id/detail_ad_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/new_divider"
+                    android:visibility="gone" />
+
+                <!-- Anúncio nativo — visível apenas após carregar -->
+                <FrameLayout
+                    android:id="@+id/detail_native_ad_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone" />
 
             </LinearLayout>
         </LinearLayout>

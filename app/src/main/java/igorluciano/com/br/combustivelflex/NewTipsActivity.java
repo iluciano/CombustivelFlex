@@ -1,17 +1,16 @@
 package igorluciano.com.br.combustivelflex;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.view.WindowCompat;
+import androidx.activity.EdgeToEdge;
 
-public class NewTipsActivity extends Activity {
+public class NewTipsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_tips);
 
         findViewById(R.id.new_tips_home_tab).setOnClickListener(view -> {

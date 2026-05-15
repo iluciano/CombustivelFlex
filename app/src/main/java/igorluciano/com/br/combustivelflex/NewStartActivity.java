@@ -1,10 +1,10 @@
 package igorluciano.com.br.combustivelflex;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.core.view.WindowCompat;
+import androidx.activity.EdgeToEdge;
 
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -12,7 +12,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
-public class NewStartActivity extends Activity {
+public class NewStartActivity extends AppCompatActivity {
     private static final int UPDATE_REQUEST_CODE = 1001;
 
     private AppUpdateManager appUpdateManager;
@@ -20,8 +20,7 @@ public class NewStartActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_start);
         appUpdateManager = AppUpdateManagerFactory.create(this);
         checkForAppUpdate();

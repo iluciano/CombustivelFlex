@@ -1,19 +1,19 @@
 package igorluciano.com.br.combustivelflex;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.core.view.WindowCompat;
+import androidx.activity.EdgeToEdge;
 
 import com.google.android.gms.ads.AdView;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class NewResultActivity extends Activity {
+public class NewResultActivity extends AppCompatActivity {
     public static final String EXTRA_GASOLINE = "valGas";
     public static final String EXTRA_ETHANOL = "valEta";
     public static final String EXTRA_GASOLINE_CONSUMPTION = "gasolineConsumption";
@@ -24,8 +24,7 @@ public class NewResultActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_result);
 
         TextView resultText = findViewById(R.id.new_result_text);

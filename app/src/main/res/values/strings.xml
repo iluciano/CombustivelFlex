@@ -119,6 +119,8 @@
     <string name="stations_see_map">VER NO MAPA</string>
     <string name="stations_loading">Buscando postos próximos…</string>
     <string name="stations_empty">Nenhum posto encontrado próximo a você.</string>
+    <string name="stations_empty_title">Nenhum posto encontrado</string>
+    <string name="stations_empty_subtitle">Não há postos cadastrados em um raio de 5 km da sua localização atual.\n\nToque em \"Localização atual\" para tentar novamente.</string>
     <string name="stations_error_location">Não foi possível obter a localização.</string>
     <string name="stations_error_firestore">Erro ao buscar postos. Verifique sua conexão.</string>
     <string name="stations_permission_denied">Permissão de localização necessária para mostrar postos próximos.</string>
@@ -135,4 +137,5 @@
     <string name="detail_service_oil">Troca de óleo</string>
     <string name="detail_service_convenience">Conveniência</string>
     <string name="detail_service_wash">Lavagem</string>
+    <string name="native_ad_sponsored">Patrocinado</string>
 </resources>

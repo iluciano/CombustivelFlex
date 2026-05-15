@@ -1,6 +1,6 @@
 package igorluciano.com.br.combustivelflex;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.view.WindowCompat;
+import androidx.activity.EdgeToEdge;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class NewHistoryActivity extends Activity {
+public class NewHistoryActivity extends AppCompatActivity {
     private final NumberFormat currencyFormat =
             NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
     private final SimpleDateFormat dateFormat =
@@ -25,8 +25,7 @@ public class NewHistoryActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_history);
 
         findViewById(R.id.new_history_home_tab).setOnClickListener(view -> {
