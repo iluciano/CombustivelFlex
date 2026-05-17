@@ -24,7 +24,7 @@
     <string name="new_home_title">COMBUSTÍVEL FLEX</string>
     <string name="new_home_title_fuel">COMBUSTÍVEL</string>
     <string name="new_home_title_flex">FLEX</string>
-    <string name="new_home_subtitle">Qual o melhor combustível para o seu carro?</string>
+    <string name="new_home_subtitle">Qual é o melhor combustível para o seu carro?</string>
     <string name="new_gasoline_price_label">Preço da gasolina</string>
     <string name="new_ethanol_price_label">Preço do etanol</string>
     <string name="new_price_hint">R$ 0,00</string>
@@ -53,7 +53,7 @@
     <string name="new_start_calculate_subtitle">Veja qual opção é mais econômica para você</string>
     <string name="new_start_history_subtitle">Acompanhe seus cálculos anteriores</string>
     <string name="new_start_stations_title">Postos próximos</string>
-    <string name="new_start_stations_subtitle">Encontre postos de gasolina perto de você</string>
+    <string name="new_start_stations_subtitle">Encontre postos de combustível perto de você</string>
     <string name="new_start_tips_title">Dicas de economia</string>
     <string name="new_start_tips_subtitle">Aprenda a economizar combustível no dia a dia</string>
     <string name="new_more_tips_subtitle">Aprenda a economizar combustível no dia a dia</string>
@@ -93,7 +93,7 @@
     <string name="new_settings_consumption_dialog_message">Digite o consumo em km/L.</string>
     <string name="new_settings_notifications">Notificações</string>
     <string name="new_settings_notifications_denied">Permissão de notificações não concedida.</string>
-    <string name="new_settings_price_reminder">Lembrar de revisar preços</string>
+    <string name="new_settings_price_reminder">Lembrete para revisão de preços</string>
     <string name="new_settings_rate">Avaliar o app</string>
     <string name="new_settings_share">Compartilhar com amigos</string>
     <string name="new_settings_share_title">Compartilhar app</string>
@@ -138,4 +138,7 @@
     <string name="detail_service_convenience">Conveniência</string>
     <string name="detail_service_wash">Lavagem</string>
     <string name="native_ad_sponsored">Patrocinado</string>
+    <string name="stations_coleta_label">Data de coleta: %1$s</string>
+    <string name="info_anp_title">Dados da ANP</string>
+    <string name="info_anp_message">Os preços exibidos são coletados pela ANP (Agência Nacional do Petróleo, Gás Natural e Biocombustíveis) com base em pesquisas realizadas periodicamente nos postos de combustível.\n\nA data de coleta indica quando essas informações foram registradas pela agência.</string>
 </resources>

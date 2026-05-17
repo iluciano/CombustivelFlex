@@ -3,6 +3,7 @@
 .tools
 /local.properties
 /keystore.properties
+/app/google-services.json
 *.jks
 *.keystore
 *.pepk

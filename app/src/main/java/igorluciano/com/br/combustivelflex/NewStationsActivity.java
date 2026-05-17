@@ -146,6 +146,7 @@ public class NewStationsActivity extends AppCompatActivity {
                         posto.setBairro(doc.getString("bairro"));
                         posto.setCidade(doc.getString("cidade"));
                         posto.setEstado(doc.getString("estado"));
+                        posto.setDataUltimaColeta(formatDataColeta(doc.getString("data_ultima_coleta")));
 
                         float[] result = new float[1];
                         Location.distanceBetween(userLat, userLon, lat, lon, result);
@@ -172,6 +173,17 @@ public class NewStationsActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         runOnUiThread(() -> showStatus(getString(R.string.stations_error_firestore)))
                 );
+    }
+
+    private String formatDataColeta(String raw) {
+        if (raw == null || raw.isEmpty()) return "08/05/2026";
+        try {
+            String[] parts = raw.split("-");
+            if (parts.length == 3 && parts[0].length() == 4) {
+                return parts[2] + "/" + parts[1] + "/" + parts[0];
+            }
+        } catch (Exception ignored) {}
+        return raw;
     }
 
     private void openMap(Location location) {

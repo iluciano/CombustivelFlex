@@ -63,11 +63,23 @@ public class PostoAdapter extends RecyclerView.Adapter<PostoAdapter.ViewHolder> 
         holder.preco.setText(formatPreco(ctx, posto.getPrecoGasolinaComum()));
         holder.precoEtanol.setText(formatPreco(ctx, posto.getPrecoEtanol()));
 
+        String dataColeta = posto.getDataUltimaColeta() != null ? posto.getDataUltimaColeta() : "08/05/2026";
+        holder.dataColeta.setText(ctx.getString(R.string.stations_coleta_label, dataColeta));
+        holder.infoIcon.setOnClickListener(v -> showAnpInfoDialog(ctx));
+
         bindBrand(holder, posto.getBandeira());
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onItemClick(posto);
         });
+    }
+
+    private void showAnpInfoDialog(Context ctx) {
+        new android.app.AlertDialog.Builder(ctx)
+                .setTitle(R.string.info_anp_title)
+                .setMessage(R.string.info_anp_message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     private void bindBrand(ViewHolder holder, String bandeira) {
@@ -125,6 +137,8 @@ public class PostoAdapter extends RecyclerView.Adapter<PostoAdapter.ViewHolder> 
         final TextView distancia;
         final TextView preco;
         final TextView precoEtanol;
+        final TextView dataColeta;
+        final ImageView infoIcon;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -135,6 +149,8 @@ public class PostoAdapter extends RecyclerView.Adapter<PostoAdapter.ViewHolder> 
             distancia = itemView.findViewById(R.id.item_posto_distancia);
             preco = itemView.findViewById(R.id.item_posto_preco);
             precoEtanol = itemView.findViewById(R.id.item_posto_preco_etanol);
+            dataColeta = itemView.findViewById(R.id.item_data_coleta);
+            infoIcon = itemView.findViewById(R.id.item_info_icon);
         }
     }
 }

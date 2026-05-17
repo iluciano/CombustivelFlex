@@ -19,6 +19,7 @@ public class Posto implements Parcelable {
     private String bairro;
     private String cidade;
     private String estado;
+    private String dataUltimaColeta;
 
     public Posto() {}
 
@@ -38,6 +39,7 @@ public class Posto implements Parcelable {
         bairro = in.readString();
         cidade = in.readString();
         estado = in.readString();
+        dataUltimaColeta = in.readString();
     }
 
     @Override
@@ -57,6 +59,7 @@ public class Posto implements Parcelable {
         dest.writeString(bairro);
         dest.writeString(cidade);
         dest.writeString(estado);
+        dest.writeString(dataUltimaColeta);
     }
 
     @Override
@@ -111,4 +114,7 @@ public class Posto implements Parcelable {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
+
+    public String getDataUltimaColeta() { return dataUltimaColeta; }
+    public void setDataUltimaColeta(String dataUltimaColeta) { this.dataUltimaColeta = dataUltimaColeta; }
 }

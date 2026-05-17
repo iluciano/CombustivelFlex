@@ -53,6 +53,40 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="24dp">
 
+                <!-- Data de coleta ANP -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/detail_data_coleta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/new_text_muted"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:id="@+id/detail_info_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="6dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:contentDescription="@string/info_anp_title"
+                        android:focusable="true"
+                        android:src="@drawable/ic_info"
+                        android:tint="@color/new_text_muted" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/new_divider" />
+
                 <!-- Logo + nome + distância -->
                 <LinearLayout
                     android:layout_width="match_parent"

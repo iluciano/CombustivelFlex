@@ -44,6 +44,17 @@ public class NewStationDetailActivity extends AppCompatActivity {
 
         findViewById(R.id.detail_back_button).setOnClickListener(v -> finish());
 
+        String dataColeta = posto.getDataUltimaColeta() != null ? posto.getDataUltimaColeta() : "08/05/2026";
+        ((TextView) findViewById(R.id.detail_data_coleta))
+                .setText(getString(R.string.stations_coleta_label, dataColeta));
+        findViewById(R.id.detail_info_icon).setOnClickListener(v ->
+                new android.app.AlertDialog.Builder(this)
+                        .setTitle(R.string.info_anp_title)
+                        .setMessage(R.string.info_anp_message)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+        );
+
         bindBrand(posto);
 
         ((TextView) findViewById(R.id.detail_posto_nome))
