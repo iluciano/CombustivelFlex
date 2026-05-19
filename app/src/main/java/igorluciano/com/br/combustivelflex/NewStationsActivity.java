@@ -119,8 +119,19 @@ public class NewStationsActivity extends AppCompatActivity {
     }
 
     private void loadFromFirestore(double userLat, double userLon, Location userLocation) {
+        // Bounding box de ~100 km ao redor do usuário — filtra latitude no servidor,
+        // longitude no cliente. Evita ler os 6.400+ documentos da coleção inteira.
+        double latDelta = 100.0 / 111.0;
+        double lonDelta = 100.0 / (111.0 * Math.cos(Math.toRadians(userLat)));
+        double minLat = userLat - latDelta;
+        double maxLat = userLat + latDelta;
+        double minLon = userLon - lonDelta;
+        double maxLon = userLon + lonDelta;
+
         FirebaseFirestore.getInstance()
                 .collection("postos")
+                .whereGreaterThan("latitude", minLat)
+                .whereLessThan("latitude", maxLat)
                 .get()
                 .addOnSuccessListener(snapshot -> {
                     List<Posto> postos = new ArrayList<>();
@@ -136,6 +147,8 @@ public class NewStationsActivity extends AppCompatActivity {
                         Double precoEtanol = doc.getDouble("preco_etanol");
 
                         if (lat == null || lon == null) continue;
+                        if (lon < minLon || lon > maxLon) continue;
+
                         posto.setLatitude(lat);
                         posto.setLongitude(lon);
                         if (preco != null) posto.setPrecoGasolinaComum(preco);
@@ -150,7 +163,6 @@ public class NewStationsActivity extends AppCompatActivity {
 
                         float[] result = new float[1];
                         Location.distanceBetween(userLat, userLon, lat, lon, result);
-                        if (result[0] > 5_000) continue;
                         posto.setDistanciaMetros(result[0]);
 
                         postos.add(posto);
@@ -159,11 +171,13 @@ public class NewStationsActivity extends AppCompatActivity {
                     Collections.sort(postos, (a, b) ->
                             Float.compare(a.getDistanciaMetros(), b.getDistanciaMetros()));
 
+                    List<Posto> closest = postos.size() > 10 ? postos.subList(0, 10) : postos;
+
                     runOnUiThread(() -> {
-                        if (postos.isEmpty()) {
+                        if (closest.isEmpty()) {
                             showEmpty();
                         } else {
-                            adapter.setPostos(postos);
+                            adapter.setPostos(new ArrayList<>(closest));
                             // Update map button with real location
                             findViewById(R.id.stations_map_button).setOnClickListener(v -> openMap(userLocation));
                             showList();
