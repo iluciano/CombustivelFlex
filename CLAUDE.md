@@ -1,144 +1,163 @@
-# CLAUDE.md — Contexto do Projeto: Postos Próximos
+# CLAUDE.md — CombustivelFlex (Android)
 
-> Este arquivo fornece contexto completo para o Claude Code implementar a tela
-> de "Postos Próximos" em um app Android nativo (Java).
-> Uma imagem da tela de referência será compartilhada separadamente.
-
----
-
-## 🎯 Objetivo
-
-Implementar a tela **"Postos Próximos"** conforme o design de referência (imagem anexa).
-A tela exibe postos de combustível próximos ao usuário, ordenados por distância,
-com o preço da gasolina comum e um botão para ver no mapa.
+> Contexto completo do projeto para o Claude Code. Leia este arquivo antes de
+> qualquer alteração no código.
 
 ---
 
-## 🛠️ Stack Tecnológica
+## Visão Geral
+
+App Android nativo Java. Calculadora de combustível flex (gasolina vs etanol)
+com tela de postos próximos com preços da ANP.
+
+**Pacote:** `igorluciano.com.br.combustivelflex`
+**Versão atual:** versionCode 30, versionName 1.2.0
+**Branch principal:** `master`
+
+---
+
+## Stack
 
 | Camada | Tecnologia |
 |---|---|
-| Linguagem | **Java** (Android nativo) |
-| IDE | Android Studio |
-| Banco de dados | **Cloud Firestore** (Firebase) |
-| Localização | **FusedLocationProviderClient** (Google Play Services) |
-| UI da lista | **RecyclerView + CardView** |
-| Ícones/Assets | Logos das bandeiras como drawables |
+| Linguagem | Java (Android nativo) |
+| minSdk / targetSdk | 23 / 35 |
+| Banco de dados | Cloud Firestore (Firebase) |
+| Localização | FusedLocationProviderClient (Google Play Services) |
+| UI da lista | RecyclerView + adapter customizado |
+| Anúncios | AdMob — Native Advanced (`AdLoader` + `forNativeAd()`) |
+| Build | Gradle Wrapper (`DEFAULT_WRAPPED`) |
 
 ---
 
-## 📁 Estrutura de Arquivos Esperada
+## Estrutura de Telas
 
-```
-app/
-├── src/main/
-│   ├── java/com/seu/pacote/
-│   │   ├── MainActivity.java
-│   │   ├── PostosActivity.java           ← TELA PRINCIPAL A IMPLEMENTAR
-│   │   ├── model/
-│   │   │   └── Posto.java               ← Model do posto
-│   │   └── adapter/
-│   │       └── PostoAdapter.java        ← Adapter do RecyclerView
-│   ├── res/
-│   │   ├── layout/
-│   │   │   ├── activity_postos.xml      ← Layout da tela
-│   │   │   └── item_posto.xml           ← Layout de cada card
-│   │   └── drawable/
-│   │       ├── ic_ipiranga.xml (ou .png)
-│   │       ├── ic_shell.xml
-│   │       ├── ic_br.xml
-│   │       ├── ic_ale.xml
-│   │       └── ic_totalenergies.xml
-└── build.gradle
-```
+| Activity | Layout | Descrição |
+|---|---|---|
+| NewStartActivity | activity_new_start.xml | Calculadora flex (tela inicial) |
+| NewHistoryActivity | activity_new_history.xml | Histórico de cálculos |
+| NewStationsActivity | activity_new_stations.xml | Lista de postos próximos |
+| NewStationDetailActivity | activity_new_station_detail.xml | Detalhe do posto |
+| NewMoreActivity | activity_new_more.xml | Aba "Mais" |
+| NewSettingsActivity | activity_new_settings.xml | Configurações |
+| NewTipsActivity | activity_new_tips.xml | Dicas de economia |
 
 ---
 
-## 🗂️ Estrutura do Firestore
+## Estrutura do Firestore
 
-**Coleção:** `postos`
+**Coleção:** `postos` (6.431 documentos)
 
-Cada documento representa um posto com os seguintes campos:
-
-```json
-{
-  "nome": "Posto Ipiranga",
-  "bandeira": "ipiranga",
-  "latitude": -23.550520,
-  "longitude": -46.633308,
-  "preco_gasolina_comum": 5.79,
-  "preco_gasolina_aditivada": 6.10,
-  "preco_etanol": 3.89,
-  "atualizado_em": "2026-05-11"
-}
-```
-
-**Valores válidos para `bandeira`:** `ipiranga`, `shell`, `br`, `ale`, `totalenergies`
+| Campo | Tipo | Observação |
+|---|---|---|
+| `nome` | String | Nome do posto |
+| `bandeira` | String | `ipiranga`, `shell`, `br`, `ale`, `totalenergies` |
+| `latitude` | Number | Latitude geográfica |
+| `longitude` | Number | Longitude geográfica |
+| `preco_gasolina` | Number | Preço da gasolina comum (R$) |
+| `preco_etanol` | Number | Preço do etanol (R$) |
+| `rua` | String | — |
+| `numero` | String | — |
+| `bairro` | String | — |
+| `cidade` | String | — |
+| `estado` | String | UF |
+| `data_ultima_coleta` | String | Formato `YYYY-MM-DD` — data da coleta ANP |
 
 ---
 
-## 📱 Comportamento da Tela
+## Query de Postos — Bounding Box
 
-### Fluxo completo:
-1. App solicita permissão de localização (`ACCESS_FINE_LOCATION`)
-2. Obtém localização atual via `FusedLocationProviderClient`
-3. Busca todos os documentos da coleção `postos` no Firestore
-4. Calcula a distância entre o usuário e cada posto via `Location.distanceBetween()`
-5. Ordena os postos do mais próximo ao mais distante
-6. Exibe a lista em um `RecyclerView`
-7. Botão **"VER NO MAPA"** abre o Google Maps com os postos via Intent
+**NÃO fazer** `.collection("postos").get()` sem filtro — leria 6.431 documentos
+a cada acesso, estourando o limite gratuito do Firestore com ~8 usuários/dia.
 
-### Exibição de cada item (card):
-- Logo da bandeira (ícone à esquerda)
-- Nome do posto
-- Distância em km (ex: `1,2 km`)
-- Preço da gasolina comum (ex: `R$ 5,79`)
-- Label: `Gasolina comum`
-- Chevron `>` à direita (indicando que é clicável)
+**Implementação correta** em `NewStationsActivity.java`:
 
-### Formatação de distância:
-- Menos de 1 km → exibir em metros: `850 m`
-- 1 km ou mais → exibir com 1 casa decimal: `1,2 km`
+```java
+double latDelta = 100.0 / 111.0;
+double lonDelta = 100.0 / (111.0 * Math.cos(Math.toRadians(userLat)));
+double minLat = userLat - latDelta;
+double maxLat = userLat + latDelta;
+double minLon = userLon - lonDelta;
+double maxLon = userLon + lonDelta;
 
-### Formatação de preço:
-- Padrão brasileiro: `R$ 5,79` (vírgula como separador decimal)
+FirebaseFirestore.getInstance()
+    .collection("postos")
+    .whereGreaterThan("latitude", minLat)
+    .whereLessThan("latitude", maxLat)
+    .get()
+    .addOnSuccessListener(snapshot -> {
+        // filtrar longitude no cliente:
+        if (lon < minLon || lon > maxLon) continue;
+        // calcular distância, ordenar, pegar top 10
+    });
+```
+
+**Regras após receber os dados:**
+1. Ignorar documentos sem `latitude` ou `longitude`
+2. Filtrar `longitude` client-side (Firestore não suporta range em dois campos)
+3. Calcular distância exata com `Location.distanceBetween()`
+4. Ordenar do mais próximo ao mais distante
+5. Exibir apenas os **10 primeiros**
 
 ---
 
-## 🔧 Dependências necessárias no `build.gradle` (app)
+## Data de Coleta ANP
 
-```groovy
-dependencies {
-    // Firebase
-    implementation platform('com.google.firebase:firebase-bom:33.0.0')
-    implementation 'com.google.firebase:firebase-firestore'
-
-    // Google Play Services - Localização
-    implementation 'com.google.android.gms:play-services-location:21.2.0'
-
-    // RecyclerView e CardView
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'androidx.cardview:cardview:1.0.0'
-}
-```
-
-No `build.gradle` do projeto (nível raiz), garantir o plugin do Google Services:
-```groovy
-plugins {
-    id 'com.google.gms.google-services' version '4.4.1' apply false
-}
-```
-
-No `build.gradle` do app:
-```groovy
-plugins {
-    id 'com.google.gms.google-services'
-}
-```
+- Campo Firestore: `data_ultima_coleta` (formato `YYYY-MM-DD`)
+- Exibir como: `"Data de coleta: DD/MM/YYYY"`
+- String resource: `stations_coleta_label = "Data de coleta: %1$s"`
+- Fallback quando ausente: `"08/05/2026"`
+- Acompanha ícone `ic_info.xml` que abre AlertDialog:
+  - Título: `info_anp_title`
+  - Mensagem: `info_anp_message`
+- **Atenção de layout:** usar `layout_width="wrap_content"` no TextView da data —
+  nunca `0dp` + `layout_weight`, pois empurra o ícone para longe do texto
 
 ---
 
-## 🔐 AndroidManifest.xml — Permissões necessárias
+## EdgeToEdge
+
+`EdgeToEdge.enable()` está ativo em todas as Activities. Todas as telas precisam
+de `android:fitsSystemWindows="true"` na raiz do layout para evitar sobreposição
+com a status bar.
+
+---
+
+## Padrão Visual dos Layouts
+
+- Títulos de seção ficam **fora** do card branco, em um header acima dele
+- O card contém apenas o conteúdo funcional
+- Anúncios nativos: container `FrameLayout` + divider acima ficam `visibility="gone"`
+  até o ad carregar
+
+---
+
+## Anúncios AdMob
+
+Formato: **Native Advanced** — usar `AdLoader.forNativeAd()`, nunca `AdView`.
+
+| Tela | Ad Unit ID |
+|---|---|
+| Mais | `ca-app-pub-1199102836233471/3525523095` |
+| Detalhe do posto | (ver código) |
+
+---
+
+## Formatações
+
+**Distância:**
+- < 1000 m → `"850 m"`
+- ≥ 1000 m → `"1,2 km"` (1 casa decimal, vírgula como separador)
+
+**Preço:**
+- Padrão brasileiro: `"R$ 5,79"` (locale pt_BR)
+
+**Data de coleta:**
+- Raw: `"2026-05-08"` → Exibido: `"08/05/2026"`
+
+---
+
+## Permissões (AndroidManifest.xml)
 
 ```xml
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -146,85 +165,36 @@ plugins {
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
----
-
-## 🎨 Design Reference
-
-A tela segue o design da imagem compartilhada. Diretrizes visuais:
-
-- **Background geral:** Branco (`#FFFFFF`)
-- **Título:** "Postos próximos" — bold, grande, preto
-- **Subtítulo:** "Localização atual" — azul, com ícone de pin
-- **Cards:** Fundo branco, separados por divisórias sutis (sem sombra exagerada)
-- **Distância:** Cinza escuro, abaixo do nome
-- **Preço:** Azul escuro, bold, alinhado à direita
-- **Label combustível:** Cinza claro, pequeno, abaixo do preço (`Gasolina comum`)
-- **Botão VER NO MAPA:** Azul sólido (`#1A73E8`), texto branco, bordas arredondadas, largura total
-- **Bottom Navigation:** 4 tabs — Início, Histórico, Postos (ativo/azul), Mais
+Localização precisa ser solicitada em runtime (API 23+).
 
 ---
 
-## 🧭 Lógica de Negócio — Cálculo de Distância
+## Modelo Posto.java (Parcelable)
 
-```java
-// Dentro do listener do Firestore, para cada posto:
-float[] distanceResult = new float[1];
-Location.distanceBetween(
-    userLatitude, userLongitude,
-    posto.getLatitude(), posto.getLongitude(),
-    distanceResult
-);
-posto.setDistanciaMetros(distanceResult[0]);
+Campos: `id`, `nome`, `bandeira`, `latitude`, `longitude`, `precoGasolinaComum`,
+`precoEtanol`, `distanciaMetros`, `rua`, `numero`, `bairro`, `cidade`, `estado`,
+`dataUltimaColeta`.
 
-// Ordenação após busca completa:
-Collections.sort(postos,
-    Comparator.comparingDouble(Posto::getDistanciaMetros));
-```
+Ao adicionar campos: atualizar `writeToParcel` e o construtor `Posto(Parcel in)`
+**na mesma ordem**.
 
 ---
 
-## ⚠️ Observações Importantes
+## Como Gerar Release
 
-1. **`google-services.json`** deve estar em `app/` — o Claude Code NÃO deve criá-lo,
-   pois é gerado pelo Firebase Console e contém chaves privadas do projeto.
+Use o comando `/release` — ele obriga a atualizar a versão antes de gerar o AAB.
 
-2. **Permissão em runtime** — A partir do Android 6.0 (API 23), localização precisa
-   ser solicitada em tempo de execução, não apenas no Manifest.
+**Nunca** rodar `./gradlew bundleRelease` diretamente sem antes bumpar
+`versionCode` e `versionName` em `app/build.gradle`.
 
-3. **Ícones das bandeiras** — Se não houver os drawables, o Claude Code deve criar
-   placeholders coloridos (`ShapeDrawable`) com a inicial da bandeira até os assets
-   reais serem fornecidos.
-
-4. **Tratamento de erro** — Implementar fallback para quando:
-   - Localização não está disponível
-   - Sem conexão com Firestore
-   - Lista vazia
-
-5. **Dados do CSV** — Os dados do CSV serão importados para o Firestore via script
-   Node.js separado. O app apenas lê do Firestore, nunca do CSV diretamente.
+AAB de saída: `app/build/outputs/bundle/release/app-release.aab`
 
 ---
 
-## 📋 Tarefas para o Claude Code Executar
+## Observações Importantes
 
-Siga esta ordem:
-
-- [ ] 1. Criar `Posto.java` (model com todos os campos + `distanciaMetros`)
-- [ ] 2. Criar `item_posto.xml` (layout de cada card da lista)
-- [ ] 3. Criar `activity_postos.xml` (layout completo da tela)
-- [ ] 4. Criar `PostoAdapter.java` (RecyclerView Adapter)
-- [ ] 5. Criar `PostosActivity.java` (Activity principal com lógica de localização + Firestore)
-- [ ] 6. Atualizar `build.gradle` com as dependências
-- [ ] 7. Atualizar `AndroidManifest.xml` com permissões e declaração da Activity
-- [ ] 8. Criar drawables placeholder para cada bandeira (se não existirem)
-
----
-
-## 💬 Como usar este arquivo com o Claude Code
-
-1. Abra o terminal integrado do VS Code
-2. Inicie o Claude Code: `claude`
-3. Compartilhe este arquivo e a imagem da tela de referência
-4. Peça: _"Implemente a tela seguindo o CLAUDE.md e a imagem anexa"_
-
-O Claude Code lerá este arquivo automaticamente se ele estiver na raiz do projeto.
+- **`google-services.json`** não deve ser criado pelo Claude Code — é gerado pelo
+  Firebase Console e contém chaves privadas
+- **`keystore.properties`** não deve ser commitado — contém credenciais de assinatura
+- O app lê dados apenas do Firestore, nunca de CSV diretamente
+- Para referência da lógica de postos no iOS: ver `STATIONS_LIST_SPEC.md`
