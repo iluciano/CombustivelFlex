@@ -11,7 +11,7 @@ App Android nativo Java. Calculadora de combustível flex (gasolina vs etanol)
 com tela de postos próximos com preços da ANP.
 
 **Pacote:** `igorluciano.com.br.combustivelflex`
-**Versão atual:** versionCode 30, versionName 1.2.0
+**Versão atual:** versionCode 31, versionName 1.3.0
 **Branch principal:** `master`
 
 ---
@@ -26,6 +26,7 @@ com tela de postos próximos com preços da ANP.
 | Localização | FusedLocationProviderClient (Google Play Services) |
 | UI da lista | RecyclerView + adapter customizado |
 | Anúncios | AdMob — Native Advanced (`AdLoader` + `forNativeAd()`) |
+| UI feedback | Material Snackbar (`com.google.android.material:material:1.12.0`) |
 | Build | Gradle Wrapper (`DEFAULT_WRAPPED`) |
 
 ---
@@ -188,6 +189,18 @@ Use o comando `/release` — ele obriga a atualizar a versão antes de gerar o A
 `versionCode` e `versionName` em `app/build.gradle`.
 
 AAB de saída: `app/build/outputs/bundle/release/app-release.aab`
+
+---
+
+## Favoritos
+
+Persistência local via `SharedPreferences`, gerenciada pela classe `FavoritesManager.java`.
+
+- **Armazenamento:** ID do posto (`Set<String>`) + dados completos serializados em JSON (`posto_<id>`)
+- **Tela de lista:** tabs **Próximos / Favoritos** — no modo Favoritos a linha de localização fica oculta; lista atualiza no `onResume`
+- **Tela de detalhe:** ícone de coração no topo direito — contorno preto (não favoritado) / preenchido vermelho (favoritado)
+- **Feedback:** `Snackbar` azul ao adicionar, cinza escuro ao remover
+- **Persistência:** sobrevive a fechar o app e reiniciar o aparelho; perdido apenas com "Limpar dados" ou desinstalação
 
 ---
 
