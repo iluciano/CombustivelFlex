@@ -146,4 +146,6 @@
     <string name="stations_tab_favoritos">Favoritos</string>
     <string name="stations_favorites_empty_title">Nenhum favorito ainda</string>
     <string name="stations_favorites_empty_subtitle">Abra um posto e toque no coração para salvá-lo aqui.</string>
+    <string name="favorite_added">Posto adicionado aos favoritos</string>
+    <string name="favorite_removed">Posto removido dos favoritos</string>
 </resources>

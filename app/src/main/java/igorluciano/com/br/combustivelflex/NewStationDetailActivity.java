@@ -21,6 +21,8 @@ import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -86,11 +88,29 @@ public class NewStationDetailActivity extends AppCompatActivity {
     private void toggleFavorite() {
         if (isFavorite) {
             FavoritesManager.removeFavorite(this, posto.getId());
+            isFavorite = false;
+            showFavoriteSnackbar(false);
         } else {
             FavoritesManager.addFavorite(this, posto);
+            isFavorite = true;
+            showFavoriteSnackbar(true);
         }
-        isFavorite = !isFavorite;
         updateHeartIcon();
+    }
+
+    private void showFavoriteSnackbar(boolean added) {
+        View root = findViewById(android.R.id.content);
+        String message = added
+                ? getString(R.string.favorite_added)
+                : getString(R.string.favorite_removed);
+        int bgColor = added
+                ? getColor(R.color.new_blue)
+                : 0xFF4A4A4A;
+
+        Snackbar snackbar = Snackbar.make(root, message, Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(bgColor);
+        snackbar.setTextColor(0xFFFFFFFF);
+        snackbar.show();
     }
 
     private void updateHeartIcon() {
