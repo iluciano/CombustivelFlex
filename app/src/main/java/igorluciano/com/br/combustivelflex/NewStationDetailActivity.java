@@ -23,20 +23,17 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 public class NewStationDetailActivity extends AppCompatActivity {
 
     private static final String NATIVE_AD_UNIT_ID = "ca-app-pub-1199102836233471/2999376074";
-    private static final String PREFS_FAVORITES = "favorites";
-    private static final String KEY_FAVORITE_IDS = "favorite_ids";
 
     static final String EXTRA_POSTO = "posto";
 
     private NativeAd nativeAd;
     private boolean isFavorite;
+    private Posto posto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +41,14 @@ public class NewStationDetailActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_new_station_detail);
 
-        Posto posto = getIntent().getParcelableExtra(EXTRA_POSTO);
+        posto = getIntent().getParcelableExtra(EXTRA_POSTO);
         if (posto == null) { finish(); return; }
 
         findViewById(R.id.detail_back_button).setOnClickListener(v -> finish());
 
-        Set<String> favorites = getSharedPreferences(PREFS_FAVORITES, MODE_PRIVATE)
-                .getStringSet(KEY_FAVORITE_IDS, new HashSet<>());
-        isFavorite = favorites.contains(posto.getId());
+        isFavorite = FavoritesManager.isFavorite(this, posto.getId());
         updateHeartIcon();
-        findViewById(R.id.detail_heart_button).setOnClickListener(v -> toggleFavorite(posto.getId()));
+        findViewById(R.id.detail_heart_button).setOnClickListener(v -> toggleFavorite());
 
         String dataColeta = posto.getDataUltimaColeta() != null ? posto.getDataUltimaColeta() : "08/05/2026";
         ((TextView) findViewById(R.id.detail_data_coleta))
@@ -88,15 +83,12 @@ public class NewStationDetailActivity extends AppCompatActivity {
         loadNativeAd();
     }
 
-    private void toggleFavorite(String postoId) {
-        android.content.SharedPreferences prefs = getSharedPreferences(PREFS_FAVORITES, MODE_PRIVATE);
-        Set<String> favorites = new HashSet<>(prefs.getStringSet(KEY_FAVORITE_IDS, new HashSet<>()));
+    private void toggleFavorite() {
         if (isFavorite) {
-            favorites.remove(postoId);
+            FavoritesManager.removeFavorite(this, posto.getId());
         } else {
-            favorites.add(postoId);
+            FavoritesManager.addFavorite(this, posto);
         }
-        prefs.edit().putStringSet(KEY_FAVORITE_IDS, favorites).apply();
         isFavorite = !isFavorite;
         updateHeartIcon();
     }

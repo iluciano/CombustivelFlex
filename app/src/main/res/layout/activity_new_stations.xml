@@ -36,15 +36,12 @@
         android:elevation="5dp"
         android:orientation="vertical">
 
-        <!-- Localização dentro do card -->
+        <!-- Localização dentro do card — oculta no modo Favoritos -->
         <LinearLayout
+            android:id="@+id/stations_location_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="14dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/stations_location_row"
@@ -54,7 +51,11 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="14dp">
 
                 <ImageView
                     android:layout_width="14dp"
@@ -64,10 +65,9 @@
                     android:tint="@color/new_blue" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:layout_weight="1"
                     android:text="@string/stations_current_location"
                     android:textColor="@color/new_blue"
                     android:textSize="13sp" />
@@ -75,10 +75,51 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:layout_marginStart="6dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_nav_refresh"
                     android:tint="@color/new_blue" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/new_divider" />
+        </LinearLayout>
+
+        <!-- Tabs: Próximos / Favoritos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tab_proximos"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:background="@drawable/tab_station_active"
+                android:gravity="center"
+                android:text="@string/stations_tab_proximos"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tab_favoritos"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/tab_station_inactive"
+                android:gravity="center"
+                android:text="@string/stations_tab_favoritos"
+                android:textColor="@color/new_text_muted"
+                android:textSize="13sp" />
         </LinearLayout>
 
         <View

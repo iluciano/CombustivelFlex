@@ -4,6 +4,7 @@ import android.Manifest;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.activity.EdgeToEdge;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,12 +33,18 @@ public class NewStationsActivity extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION = 42;
 
+    private enum Mode { PROXIMOS, FAVORITOS }
+    private Mode currentMode = Mode.PROXIMOS;
+
     private FusedLocationProviderClient fusedLocationClient;
     private PostoAdapter adapter;
     private View loadingView;
     private View recyclerView;
     private View emptyView;
     private TextView statusText;
+    private TextView tabProximos;
+    private TextView tabFavoritos;
+    private View locationContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +65,16 @@ public class NewStationsActivity extends AppCompatActivity {
         });
         rv.setAdapter(adapter);
 
-        loadingView = findViewById(R.id.stations_loading);
-        recyclerView = rv;
-        emptyView = findViewById(R.id.stations_empty_view);
-        statusText = findViewById(R.id.stations_status);
+        loadingView      = findViewById(R.id.stations_loading);
+        recyclerView     = rv;
+        emptyView        = findViewById(R.id.stations_empty_view);
+        statusText       = findViewById(R.id.stations_status);
+        tabProximos      = findViewById(R.id.tab_proximos);
+        tabFavoritos     = findViewById(R.id.tab_favoritos);
+        locationContainer = findViewById(R.id.stations_location_container);
+
+        tabProximos.setOnClickListener(v -> switchToMode(Mode.PROXIMOS));
+        tabFavoritos.setOnClickListener(v -> switchToMode(Mode.FAVORITOS));
 
         findViewById(R.id.stations_location_row).setOnClickListener(v -> loadStations());
         findViewById(R.id.stations_map_button).setOnClickListener(v -> openMap(null));
@@ -82,6 +96,57 @@ public class NewStationsActivity extends AppCompatActivity {
         });
 
         checkAndLoadStations();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Atualiza favoritos ao voltar da tela de detalhe
+        if (currentMode == Mode.FAVORITOS) {
+            loadFavorites();
+        }
+    }
+
+    private void switchToMode(Mode mode) {
+        if (currentMode == mode) return;
+        currentMode = mode;
+        updateTabStyles();
+        if (mode == Mode.PROXIMOS) {
+            locationContainer.setVisibility(View.VISIBLE);
+            checkAndLoadStations();
+        } else {
+            locationContainer.setVisibility(View.GONE);
+            loadFavorites();
+        }
+    }
+
+    private void updateTabStyles() {
+        if (currentMode == Mode.PROXIMOS) {
+            tabProximos.setBackgroundResource(R.drawable.tab_station_active);
+            tabProximos.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            tabProximos.setTypeface(null, Typeface.BOLD);
+            tabFavoritos.setBackgroundResource(R.drawable.tab_station_inactive);
+            tabFavoritos.setTextColor(ContextCompat.getColor(this, R.color.new_text_muted));
+            tabFavoritos.setTypeface(null, Typeface.NORMAL);
+        } else {
+            tabFavoritos.setBackgroundResource(R.drawable.tab_station_active);
+            tabFavoritos.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            tabFavoritos.setTypeface(null, Typeface.BOLD);
+            tabProximos.setBackgroundResource(R.drawable.tab_station_inactive);
+            tabProximos.setTextColor(ContextCompat.getColor(this, R.color.new_text_muted));
+            tabProximos.setTypeface(null, Typeface.NORMAL);
+        }
+    }
+
+    private void loadFavorites() {
+        List<Posto> favorites = FavoritesManager.getFavorites(this);
+        if (favorites.isEmpty()) {
+            showStatus(getString(R.string.stations_favorites_empty_title)
+                    + "\n\n" + getString(R.string.stations_favorites_empty_subtitle));
+        } else {
+            adapter.setPostos(favorites);
+            showList();
+        }
     }
 
     private void checkAndLoadStations() {
@@ -178,7 +243,6 @@ public class NewStationsActivity extends AppCompatActivity {
                             showEmpty();
                         } else {
                             adapter.setPostos(new ArrayList<>(closest));
-                            // Update map button with real location
                             findViewById(R.id.stations_map_button).setOnClickListener(v -> openMap(userLocation));
                             showList();
                         }
