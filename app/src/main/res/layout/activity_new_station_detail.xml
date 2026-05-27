@@ -6,12 +6,14 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <!-- Barra de voltar fora do card e do scroll -->
+    <!-- Barra de voltar + favorito fora do card e do scroll -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:gravity="center_vertical"
-        android:paddingStart="4dp">
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
 
         <ImageView
             android:id="@+id/detail_back_button"
@@ -24,6 +26,22 @@
             android:padding="12dp"
             android:src="@drawable/ic_nav_back"
             android:tint="@color/new_text_primary" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/detail_heart_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/detail_favorite"
+            android:focusable="true"
+            android:padding="12dp"
+            android:src="@drawable/ic_heart_outline" />
     </LinearLayout>
 
     <ScrollView

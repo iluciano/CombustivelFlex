@@ -23,15 +23,20 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class NewStationDetailActivity extends AppCompatActivity {
 
     private static final String NATIVE_AD_UNIT_ID = "ca-app-pub-1199102836233471/2999376074";
+    private static final String PREFS_FAVORITES = "favorites";
+    private static final String KEY_FAVORITE_IDS = "favorite_ids";
 
     static final String EXTRA_POSTO = "posto";
 
     private NativeAd nativeAd;
+    private boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,12 @@ public class NewStationDetailActivity extends AppCompatActivity {
         if (posto == null) { finish(); return; }
 
         findViewById(R.id.detail_back_button).setOnClickListener(v -> finish());
+
+        Set<String> favorites = getSharedPreferences(PREFS_FAVORITES, MODE_PRIVATE)
+                .getStringSet(KEY_FAVORITE_IDS, new HashSet<>());
+        isFavorite = favorites.contains(posto.getId());
+        updateHeartIcon();
+        findViewById(R.id.detail_heart_button).setOnClickListener(v -> toggleFavorite(posto.getId()));
 
         String dataColeta = posto.getDataUltimaColeta() != null ? posto.getDataUltimaColeta() : "08/05/2026";
         ((TextView) findViewById(R.id.detail_data_coleta))
@@ -75,6 +86,24 @@ public class NewStationDetailActivity extends AppCompatActivity {
         findViewById(R.id.detail_map_button).setOnClickListener(v -> openMap(posto));
 
         loadNativeAd();
+    }
+
+    private void toggleFavorite(String postoId) {
+        android.content.SharedPreferences prefs = getSharedPreferences(PREFS_FAVORITES, MODE_PRIVATE);
+        Set<String> favorites = new HashSet<>(prefs.getStringSet(KEY_FAVORITE_IDS, new HashSet<>()));
+        if (isFavorite) {
+            favorites.remove(postoId);
+        } else {
+            favorites.add(postoId);
+        }
+        prefs.edit().putStringSet(KEY_FAVORITE_IDS, favorites).apply();
+        isFavorite = !isFavorite;
+        updateHeartIcon();
+    }
+
+    private void updateHeartIcon() {
+        ((ImageView) findViewById(R.id.detail_heart_button)).setImageResource(
+                isFavorite ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
     }
 
     @Override

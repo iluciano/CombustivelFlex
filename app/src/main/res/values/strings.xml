@@ -141,4 +141,5 @@
     <string name="stations_coleta_label">Data de coleta: %1$s</string>
     <string name="info_anp_title">Dados da ANP</string>
     <string name="info_anp_message">Os preços exibidos são coletados pela ANP (Agência Nacional do Petróleo, Gás Natural e Biocombustíveis) com base em pesquisas realizadas periodicamente nos postos de combustível.\n\nA data de coleta indica quando essas informações foram registradas pela agência.</string>
+    <string name="detail_favorite">Favoritar posto</string>
 </resources>
