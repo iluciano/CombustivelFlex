@@ -87,13 +87,13 @@ public class NewResultActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
-        findViewById(R.id.new_result_history_tab).setOnClickListener(view -> {
-            Intent intent = new Intent(this, NewHistoryActivity.class);
+        findViewById(R.id.new_result_stations_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStationsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
-        findViewById(R.id.new_result_stations_tab).setOnClickListener(view -> {
-            Intent intent = new Intent(this, NewStationsActivity.class);
+        findViewById(R.id.new_result_maintenance_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewMaintenanceActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });

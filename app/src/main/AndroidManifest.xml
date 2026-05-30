@@ -43,6 +43,33 @@
             android:name=".NewSettingsActivity"
             android:exported="false" />
         <activity
+            android:name=".NewMaintenanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeRegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeConfirmationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewOilChangeDeleteActivity"
+            android:exported="false" />
+        <activity
             android:name=".NewStartActivity"
             android:exported="true">
             <intent-filter>

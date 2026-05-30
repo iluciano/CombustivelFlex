@@ -36,6 +36,7 @@
     <string name="new_ethanol_consumption_caption">km/L\nno etanol</string>
     <string name="new_tab_home">Início</string>
     <string name="new_tab_history">Histórico</string>
+    <string name="new_tab_calcular">Calcular</string>
     <string name="new_tab_stations">Postos</string>
     <string name="new_tab_more">Mais</string>
     <string name="new_result_title">O melhor combustível\npara o seu carro é:</string>
@@ -148,4 +149,108 @@
     <string name="stations_favorites_empty_subtitle">Abra um posto e toque no coração para salvá-lo aqui.</string>
     <string name="favorite_added">Posto adicionado aos favoritos</string>
     <string name="favorite_removed">Posto removido dos favoritos</string>
+
+    <!-- Manutenção -->
+    <string name="new_tab_maintenance">Manutenção</string>
+    <string name="maintenance_title">Manutenção</string>
+    <string name="maintenance_subtitle">Acompanhe as manutenções do seu carro</string>
+    <string name="maintenance_oil_change_title">Troca de óleo</string>
+    <string name="maintenance_oil_change_subtitle">Registre e acompanhe as trocas de óleo</string>
+
+    <!-- Troca de óleo -->
+    <string name="oil_change_status_ok_title">Tudo em dia!</string>
+    <string name="oil_change_status_ok_msg">Seu óleo está dentro do prazo recomendado.</string>
+    <string name="oil_change_status_due_title">Troca próxima!</string>
+    <string name="oil_change_status_due_msg">Sua troca de óleo está se aproximando.</string>
+    <string name="oil_change_status_overdue_title">Troca atrasada!</string>
+    <string name="oil_change_status_overdue_msg">Seu óleo ultrapassou o prazo recomendado.</string>
+    <string name="oil_change_no_record_title">Nenhuma troca registrada</string>
+    <string name="oil_change_no_record_msg">Registre a primeira troca para começar a acompanhar.</string>
+    <string name="oil_change_no_record_detail">Nenhuma troca registrada ainda</string>
+    <string name="oil_change_next_change_in">Próxima troca em</string>
+    <string name="oil_change_days_unit">dias</string>
+    <string name="oil_change_days_overdue_unit">dias de atraso</string>
+    <string name="oil_change_last_label">Última troca</string>
+    <string name="oil_change_next_label">Próxima troca prevista</string>
+    <string name="oil_change_items_title">Itens trocados na última troca</string>
+    <string name="oil_change_engine_oil">Óleo do motor</string>
+    <string name="oil_change_oil_filter">Filtro de óleo</string>
+    <string name="oil_change_air_filter">Filtro de ar</string>
+    <string name="oil_change_cabin_filter">Filtro de cabine</string>
+    <string name="oil_change_register_btn">+ Registrar nova troca</string>
+    <string name="oil_change_history_btn">Ver histórico</string>
+    <string name="oil_change_register_dialog_title">Registrar troca de óleo</string>
+    <string name="oil_change_date_label">Data da troca</string>
+    <string name="oil_change_date_hint">DD/MM/AAAA</string>
+    <string name="oil_change_km_label">Quilometragem atual</string>
+    <string name="oil_change_items_changed_label">O que foi trocado?</string>
+    <string name="oil_change_interval_label">Intervalo para próxima troca</string>
+    <string name="oil_change_months">meses</string>
+    <string name="oil_change_fill_required">Preencha a data e a quilometragem.</string>
+    <string name="oil_change_invalid_date">Data inválida. Use o formato DD/MM/AAAA.</string>
+    <string name="oil_change_saved">Troca de óleo registrada com sucesso!</string>
+    <string name="new_start_maintenance_title">Manutenção</string>
+    <string name="new_start_maintenance_subtitle">Acompanhe as revisões e trocas do seu carro</string>
+
+    <!-- Fluxo de registro de troca de óleo -->
+    <string name="oil_change_new_title">Nova troca de óleo</string>
+    <string name="oil_change_km_current_label">Km atual do veículo</string>
+    <string name="oil_change_km_hint">ex: 45.200</string>
+    <string name="oil_change_km_unit">km</string>
+    <string name="oil_change_next_km_section">Próxima troca em</string>
+    <string name="oil_change_by_km">Por km</string>
+    <string name="oil_change_by_date">Por data</string>
+    <string name="oil_change_next_km_label">Km para próxima troca</string>
+    <string name="oil_change_next_km_optional_label">Km para próxima troca (opcional)</string>
+    <string name="oil_change_next_date_label">Data prevista (opcional)</string>
+    <string name="oil_change_next_date_required_label">Data prevista</string>
+    <string name="oil_change_oil_type_label">Tipo de óleo (opcional)</string>
+    <string name="oil_change_oil_type_hint">Ex: 5W30 Sintético</string>
+    <string name="oil_change_notes_label">Observações (opcional)</string>
+    <string name="oil_change_notes_hint">Ex: Local, marca do óleo, etc.</string>
+    <string name="oil_change_continue_btn">Continuar</string>
+    <string name="oil_change_date_required">Selecione a data da troca.</string>
+    <string name="oil_change_km_required">Informe a quilometragem atual.</string>
+    <string name="oil_change_items_screen_title">Itens trocados</string>
+    <string name="oil_change_items_subtitle">Selecione os itens que foram substituídos nesta troca.</string>
+    <string name="oil_change_items_warning">Marque apenas os itens que foram realmente trocados.</string>
+    <string name="oil_change_fuel_filter">Filtro de combustível</string>
+    <string name="oil_change_brake_fluid">Fluído de freio</string>
+    <string name="oil_change_spark_plugs">Velas de ignição</string>
+    <string name="oil_change_save_btn">Salvar troca</string>
+    <string name="oil_change_confirm_title">Troca registrada\ncom sucesso!</string>
+    <string name="oil_change_confirm_subtitle">Sua manutenção está em dia.</string>
+    <string name="oil_change_back_to_summary">Voltar para resumo</string>
+    <string name="oil_change_km_current_summary">Km atual</string>
+    <string name="oil_change_next_change_summary">Próxima troca</string>
+    <string name="oil_change_no_items_selected">Nenhum item selecionado</string>
+
+    <!-- Histórico / Detalhe / Editar / Excluir de troca de óleo -->
+    <string name="oil_change_history_screen_title">Histórico de trocas</string>
+    <string name="oil_change_filter_all">Todos</string>
+    <string name="oil_change_filter_oil">Óleo</string>
+    <string name="oil_change_filter_filters">Filtros</string>
+    <string name="oil_change_new_change_btn">+ Nova troca</string>
+    <string name="oil_change_history_empty">Nenhuma troca registrada ainda.</string>
+    <string name="oil_change_history_next_format">Próxima: %1$s km ou %2$s</string>
+    <string name="oil_change_detail_title">Detalhes da troca</string>
+    <string name="oil_change_detail_date_label">Data da troca</string>
+    <string name="oil_change_detail_km_label">Km atual</string>
+    <string name="oil_change_detail_next_label">Km para próxima troca</string>
+    <string name="oil_change_detail_next_format">%1$s km ou %2$s</string>
+    <string name="oil_change_detail_notes_label">Observações</string>
+    <string name="oil_change_detail_oil_type_label">Tipo de óleo</string>
+    <string name="oil_change_detail_items_label">Itens trocados</string>
+    <string name="oil_change_edit_btn">Editar</string>
+    <string name="oil_change_delete_btn_label">Excluir</string>
+    <string name="oil_change_edit_title">Editar troca</string>
+    <string name="oil_change_save_changes_btn">Salvar alterações</string>
+    <string name="oil_change_changes_saved">Alterações salvas com sucesso!</string>
+    <string name="oil_change_delete_title">Excluir troca</string>
+    <string name="oil_change_delete_confirm_msg">Tem certeza que deseja excluir esta troca?</string>
+    <string name="oil_change_delete_data_format">Data: %1$s</string>
+    <string name="oil_change_delete_km_format">Km atual: %1$s km</string>
+    <string name="oil_change_delete_action_btn">Excluir troca</string>
+    <string name="oil_change_cancel_btn">Cancelar</string>
+    <string name="oil_change_deleted">Troca excluída.</string>
 </resources>

@@ -3,24 +3,51 @@ package igorluciano.com.br.combustivelflex;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.ads.AdView;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class NewHomeActivity extends AppCompatActivity {
     public static final String EXTRA_CLEAR_INPUTS = "newClearInputs";
+    public static final String EXTRA_OPEN_HISTORY = "openHistory";
+
+    private enum Mode { CALCULAR, HISTORICO }
+    private Mode currentMode = Mode.CALCULAR;
 
     private EditText gasolinePriceInput;
     private EditText ethanolPriceInput;
     private EditText gasolineConsumptionInput;
     private EditText ethanolConsumptionInput;
     private AdView bottomAd;
+
+    private TextView tabCalcular;
+    private TextView tabHistorico;
+    private View calcPanel;
+    private View historyPanel;
+    private LinearLayout historyContainer;
+    private TextView historyEmptyText;
+
+    private final NumberFormat currencyFormat =
+            NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+    private final SimpleDateFormat dateFormat =
+            new SimpleDateFormat("dd/MM/yyyy, HH:mm", new Locale("pt", "BR"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +64,32 @@ public class NewHomeActivity extends AppCompatActivity {
         setupInput(gasolineConsumptionInput);
         setupInput(ethanolConsumptionInput);
 
+        tabCalcular = findViewById(R.id.tab_calcular);
+        tabHistorico = findViewById(R.id.tab_historico);
+        calcPanel = findViewById(R.id.home_calc_panel);
+        historyPanel = findViewById(R.id.home_history_panel);
+        historyContainer = findViewById(R.id.home_history_container);
+        historyEmptyText = findViewById(R.id.home_history_empty_text);
+
+        tabCalcular.setOnClickListener(v -> switchToMode(Mode.CALCULAR));
+        tabHistorico.setOnClickListener(v -> switchToMode(Mode.HISTORICO));
+
         findViewById(R.id.new_calculate_button).setOnClickListener(view -> startResultIfReady());
         findViewById(R.id.new_clear_button).setOnClickListener(view -> clearInputs());
+        findViewById(R.id.home_history_clear_button).setOnClickListener(v -> showClearConfirmDialog());
+
         findViewById(R.id.new_home_home_tab).setOnClickListener(view -> {
             Intent intent = new Intent(this, NewStartActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
-        findViewById(R.id.new_home_history_tab).setOnClickListener(view -> {
-            Intent intent = new Intent(this, NewHistoryActivity.class);
+        findViewById(R.id.new_home_stations_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewStationsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
-        findViewById(R.id.new_home_stations_tab).setOnClickListener(view -> {
-            Intent intent = new Intent(this, NewStationsActivity.class);
+        findViewById(R.id.new_home_maintenance_tab).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewMaintenanceActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
@@ -64,6 +103,10 @@ public class NewHomeActivity extends AppCompatActivity {
         bottomAd = AdMobBanner.loadMainBanner(this, adContainer);
         clearInputsIfRequested(getIntent());
         fillDefaultConsumptionsIfEmpty();
+
+        if (getIntent().getBooleanExtra(EXTRA_OPEN_HISTORY, false)) {
+            switchToMode(Mode.HISTORICO);
+        }
     }
 
     @Override
@@ -71,12 +114,143 @@ public class NewHomeActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         clearInputsIfRequested(intent);
+        if (intent.getBooleanExtra(EXTRA_OPEN_HISTORY, false)) {
+            switchToMode(Mode.HISTORICO);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         fillDefaultConsumptionsIfEmpty();
+        if (currentMode == Mode.HISTORICO) {
+            renderHistory(CalculationHistoryStore.list(this));
+        }
+    }
+
+    private void switchToMode(Mode mode) {
+        if (currentMode == mode) return;
+        currentMode = mode;
+        updateTabStyles();
+        if (mode == Mode.CALCULAR) {
+            calcPanel.setVisibility(View.VISIBLE);
+            historyPanel.setVisibility(View.GONE);
+        } else {
+            calcPanel.setVisibility(View.GONE);
+            historyPanel.setVisibility(View.VISIBLE);
+            renderHistory(CalculationHistoryStore.list(this));
+        }
+    }
+
+    private void updateTabStyles() {
+        if (currentMode == Mode.CALCULAR) {
+            tabCalcular.setBackgroundResource(R.drawable.tab_station_active);
+            tabCalcular.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            tabCalcular.setTypeface(null, Typeface.BOLD);
+            tabHistorico.setBackgroundResource(R.drawable.tab_station_inactive);
+            tabHistorico.setTextColor(ContextCompat.getColor(this, R.color.new_text_muted));
+            tabHistorico.setTypeface(null, Typeface.NORMAL);
+        } else {
+            tabHistorico.setBackgroundResource(R.drawable.tab_station_active);
+            tabHistorico.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            tabHistorico.setTypeface(null, Typeface.BOLD);
+            tabCalcular.setBackgroundResource(R.drawable.tab_station_inactive);
+            tabCalcular.setTextColor(ContextCompat.getColor(this, R.color.new_text_muted));
+            tabCalcular.setTypeface(null, Typeface.NORMAL);
+        }
+    }
+
+    private void showClearConfirmDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.new_history_clear_confirm_title)
+                .setMessage(R.string.new_history_clear_confirm_message)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.new_history_clear_confirm_yes, (dialog, which) -> {
+                    CalculationHistoryStore.clear(this);
+                    renderHistory(CalculationHistoryStore.list(this));
+                })
+                .show();
+    }
+
+    private void renderHistory(List<CalculationHistoryItem> items) {
+        historyContainer.removeAllViews();
+
+        if (items.isEmpty()) {
+            historyEmptyText.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        historyEmptyText.setVisibility(View.GONE);
+        for (CalculationHistoryItem item : items) {
+            historyContainer.addView(createHistoryCard(item));
+        }
+    }
+
+    private View createHistoryCard(CalculationHistoryItem item) {
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setBackgroundResource(R.drawable.new_history_card_background);
+        int padding = dp(14);
+        card.setPadding(padding, padding, padding, padding);
+
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        cardParams.setMargins(0, 0, 0, dp(12));
+        card.setLayoutParams(cardParams);
+
+        TextView dateText = new TextView(this);
+        dateText.setText(dateFormat.format(new Date(item.createdAt)));
+        dateText.setTextColor(getColor(R.color.new_text_secondary));
+        dateText.setTextSize(12);
+        card.addView(dateText);
+
+        TextView resultText = new TextView(this);
+        resultText.setText(item.result);
+        resultText.setTextColor(getColor(
+                getString(R.string.result_ethanol).equals(item.result)
+                        ? R.color.new_green
+                        : R.color.new_orange
+        ));
+        resultText.setTextSize(18);
+        resultText.setTypeface(null, android.graphics.Typeface.BOLD);
+        card.addView(resultText);
+
+        TextView summaryText = new TextView(this);
+        summaryText.setText(formatSummary(item));
+        summaryText.setTextColor(getColor(R.color.new_text_primary));
+        summaryText.setTextSize(13);
+        summaryText.setPadding(0, dp(4), 0, 0);
+        card.addView(summaryText);
+
+        TextView savingsText = new TextView(this);
+        savingsText.setText(getString(R.string.new_history_savings_label,
+                currencyFormat.format(item.savings)));
+        savingsText.setTextColor(getColor(R.color.new_text_secondary));
+        savingsText.setTextSize(13);
+        savingsText.setPadding(0, dp(4), 0, 0);
+        card.addView(savingsText);
+
+        return card;
+    }
+
+    private String formatSummary(CalculationHistoryItem item) {
+        String summary = getString(
+                R.string.new_history_prices_format,
+                currencyFormat.format(item.gasoline),
+                currencyFormat.format(item.ethanol)
+        );
+
+        if (!item.usedConsumption) {
+            return summary;
+        }
+
+        return summary + "\n" + getString(
+                R.string.new_history_consumption_format,
+                item.gasolineConsumption,
+                item.ethanolConsumption
+        );
     }
 
     private void clearInputs() {
@@ -265,5 +439,9 @@ public class NewHomeActivity extends AppCompatActivity {
                 watcher.padDecimals();
             }
         });
+    }
+
+    private int dp(int value) {
+        return (int) (value * getResources().getDisplayMetrics().density);
     }
 }

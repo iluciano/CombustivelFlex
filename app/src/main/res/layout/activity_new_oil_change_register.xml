@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_background"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/reg_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/detail_back"
+            android:padding="12dp"
+            android:src="@drawable/ic_nav_back"
+            android:tint="@color/new_text_primary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/oil_change_new_title"
+            android:textColor="@color/new_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/new_card_background"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="20dp">
+
+                <!-- ─── Data da troca ─── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/oil_change_date_label"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/new_input_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="12dp">
+
+                    <EditText
+                        android:id="@+id/reg_date"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:hint="@string/oil_change_date_hint"
+                        android:inputType="none"
+                        android:textColor="@color/new_text_primary"
+                        android:textColorHint="@color/new_text_muted"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_feature_clock"
+                        android:tint="@color/new_text_muted" />
+                </LinearLayout>
+
+                <!-- ─── Km atual do veículo ─── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/oil_change_km_current_label"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/new_input_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
+
+                    <EditText
+                        android:id="@+id/reg_km"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/oil_change_km_hint"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        android:textColor="@color/new_text_primary"
+                        android:textColorHint="@color/new_text_muted"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/oil_change_km_unit"
+                        android:textColor="@color/new_text_muted"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- ─── Próxima troca em ─── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/oil_change_next_km_section"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <!-- Toggle: Por km | Por data -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/reg_toggle_km"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/tab_station_active"
+                        android:gravity="center"
+                        android:text="@string/oil_change_by_km"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reg_toggle_date"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/tab_station_inactive"
+                        android:gravity="center"
+                        android:text="@string/oil_change_by_date"
+                        android:textColor="@color/new_text_muted"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Km para próxima troca -->
+                <TextView
+                    android:id="@+id/reg_next_km_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/oil_change_next_km_label"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/reg_next_km_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/new_input_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
+
+                    <EditText
+                        android:id="@+id/reg_next_km"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        android:textColor="@color/new_text_primary"
+                        android:textColorHint="@color/new_text_muted"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/oil_change_km_unit"
+                        android:textColor="@color/new_text_muted"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Data prevista -->
+                <TextView
+                    android:id="@+id/reg_next_date_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/oil_change_next_date_label"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/reg_next_date_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/new_input_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="12dp">
+
+                    <EditText
+                        android:id="@+id/reg_next_date"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:hint="@string/oil_change_date_hint"
+                        android:inputType="none"
+                        android:textColor="@color/new_text_primary"
+                        android:textColorHint="@color/new_text_muted"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_feature_clock"
+                        android:tint="@color/new_text_muted" />
+                </LinearLayout>
+
+                <!-- ─── Tipo de óleo ─── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/oil_change_oil_type_label"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/reg_oil_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/new_input_bg"
+                    android:hint="@string/oil_change_oil_type_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="textCapSentences"
+                    android:maxLength="50"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColor="@color/new_text_primary"
+                    android:textColorHint="@color/new_text_muted"
+                    android:textSize="15sp" />
+
+                <!-- ─── Observações ─── -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/oil_change_notes_label"
+                    android:textColor="@color/new_text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/reg_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/new_input_bg"
+                    android:gravity="top|start"
+                    android:hint="@string/oil_change_notes_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLength="120"
+                    android:overScrollMode="never"
+                    android:paddingStart="14dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="8dp"
+                    android:scrollbars="none"
+                    android:textColor="@color/new_text_primary"
+                    android:textColorHint="@color/new_text_muted"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/reg_notes_counter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="end"
+                    android:text="0/120"
+                    android:textColor="@color/new_text_muted"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botão Continuar fixo -->
+    <Button
+        android:id="@+id/reg_continue_btn"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/new_primary_button"
+        android:text="@string/oil_change_continue_btn"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

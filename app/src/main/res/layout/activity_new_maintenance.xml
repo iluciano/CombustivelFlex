@@ -19,10 +19,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/new_tab_more"
+            android:text="@string/maintenance_title"
             android:textColor="@color/new_text_primary"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/maintenance_subtitle"
+            android:textColor="@color/new_text_secondary"
+            android:textSize="13sp" />
     </LinearLayout>
 
     <ScrollView
@@ -46,113 +54,62 @@
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:paddingStart="16dp"
-                android:paddingTop="24dp"
+                android:paddingTop="18dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="24dp">
 
+                <!-- Opção: Troca de óleo -->
                 <LinearLayout
-                    android:id="@+id/new_more_tips_card"
+                    android:id="@+id/maintenance_oil_change_card"
                     android:layout_width="match_parent"
-                    android:layout_height="116dp"
+                    android:layout_height="96dp"
                     android:background="@drawable/new_start_option_card"
-                    android:elevation="3dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="18dp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="14dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:contentDescription="@string/new_start_tips_title"
-                        android:src="@drawable/ic_feature_bulb"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:contentDescription="@string/maintenance_oil_change_title"
+                        android:src="@drawable/ic_oil_can"
                         android:tint="@color/new_orange" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="22dp"
+                        android:layout_marginStart="14dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/new_start_tips_title"
+                            android:text="@string/maintenance_oil_change_title"
                             android:textColor="@color/new_text_primary"
-                            android:textSize="22sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/new_more_tips_subtitle"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/maintenance_oil_change_subtitle"
                             android:textColor="@color/new_text_secondary"
-                            android:textSize="17sp" />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:contentDescription="@string/new_start_open_option"
-                        android:src="@drawable/ic_nav_chevron"
-                        android:tint="@color/new_text_muted" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/new_more_settings_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="116dp"
-                    android:layout_marginTop="18dp"
-                    android:background="@drawable/new_start_option_card"
-                    android:elevation="3dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="18dp">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:contentDescription="@string/new_start_settings_title"
-                        android:src="@drawable/ic_feature_gear"
-                        android:tint="@color/new_text_muted" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="22dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/new_start_settings_title"
-                            android:textColor="@color/new_text_primary"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/new_start_settings_subtitle"
-                            android:textColor="@color/new_text_secondary"
-                            android:textSize="17sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:contentDescription="@string/new_start_open_option"
                         android:src="@drawable/ic_nav_chevron"
                         android:tint="@color/new_text_muted" />
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/new_more_ad_divider"
+                    android:id="@+id/maintenance_ad_divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="18dp"
@@ -160,7 +117,7 @@
                     android:visibility="gone" />
 
                 <FrameLayout
-                    android:id="@+id/new_more_ad_container"
+                    android:id="@+id/maintenance_ad_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -170,6 +127,7 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- Barra de navegação: Início, Postos, Manutenção (ativa), Mais -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -181,7 +139,7 @@
         android:paddingEnd="8dp">
 
         <LinearLayout
-            android:id="@+id/new_more_home_tab"
+            android:id="@+id/new_maintenance_home_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -198,13 +156,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="@string/new_tab_home"
                 android:textColor="@color/new_text_muted"
                 android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/new_more_stations_tab"
+            android:id="@+id/new_maintenance_stations_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -221,13 +180,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="@string/new_tab_stations"
                 android:textColor="@color/new_text_muted"
                 android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/new_more_maintenance_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -239,18 +198,20 @@
                 android:layout_height="24dp"
                 android:contentDescription="@string/new_tab_maintenance"
                 android:src="@drawable/ic_toolbox"
-                android:tint="@color/new_text_muted" />
+                android:tint="@color/new_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="@string/new_tab_maintenance"
-                android:textColor="@color/new_text_muted"
-                android:textSize="11sp" />
+                android:textColor="@color/new_blue"
+                android:textSize="11sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/new_maintenance_more_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -262,15 +223,15 @@
                 android:layout_height="24dp"
                 android:contentDescription="@string/new_tab_more"
                 android:src="@drawable/ic_nav_more"
-                android:tint="@color/new_blue" />
+                android:tint="@color/new_text_muted" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="@string/new_tab_more"
-                android:textColor="@color/new_blue"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textColor="@color/new_text_muted"
+                android:textSize="11sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

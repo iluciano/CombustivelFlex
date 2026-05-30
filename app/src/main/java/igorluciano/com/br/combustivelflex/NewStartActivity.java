@@ -30,14 +30,19 @@ public class NewStartActivity extends AppCompatActivity {
             intent.putExtra(NewHomeActivity.EXTRA_CLEAR_INPUTS, true);
             startActivity(intent);
         });
-        findViewById(R.id.new_start_history_card).setOnClickListener(
-                view -> startActivity(new Intent(this, NewHistoryActivity.class))
-        );
-        findViewById(R.id.new_start_history_tab).setOnClickListener(
-                view -> startActivity(new Intent(this, NewHistoryActivity.class))
+        findViewById(R.id.new_start_history_card).setOnClickListener(view -> {
+            Intent intent = new Intent(this, NewHomeActivity.class);
+            intent.putExtra(NewHomeActivity.EXTRA_OPEN_HISTORY, true);
+            startActivity(intent);
+        });
+        findViewById(R.id.new_start_maintenance_card).setOnClickListener(
+                view -> startActivity(new Intent(this, NewMaintenanceActivity.class))
         );
         findViewById(R.id.new_start_stations_card).setOnClickListener(
                 view -> startActivity(new Intent(this, NewStationsActivity.class))
+        );
+        findViewById(R.id.new_start_maintenance_tab).setOnClickListener(
+                view -> startActivity(new Intent(this, NewMaintenanceActivity.class))
         );
         findViewById(R.id.new_start_stations_tab).setOnClickListener(
                 view -> startActivity(new Intent(this, NewStationsActivity.class))

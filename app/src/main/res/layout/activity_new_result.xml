@@ -228,29 +228,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/new_result_history_tab"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/new_tab_history"
-                android:src="@drawable/ic_nav_history"
-                android:tint="@color/new_text_muted" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_tab_history"
-                android:textColor="@color/new_text_muted"
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/new_result_stations_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -269,6 +246,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/new_tab_stations"
+                android:textColor="@color/new_text_muted"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/new_result_maintenance_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/new_tab_maintenance"
+                android:src="@drawable/ic_toolbox"
+                android:tint="@color/new_text_muted" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/new_tab_maintenance"
                 android:textColor="@color/new_text_muted"
                 android:textSize="11sp" />
         </LinearLayout>

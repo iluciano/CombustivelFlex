@@ -20,4 +20,6 @@
     <color name="new_panel">#F2F4F7</color>
     <color name="new_start_featured">#FFF9EF</color>
     <color name="new_start_featured_border">#FEF0C7</color>
+    <color name="new_red">#E53935</color>
+    <color name="new_red_light">#FFEBEE</color>
 </resources>
